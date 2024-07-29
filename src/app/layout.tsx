@@ -1,3 +1,4 @@
+import CommonLayout from '@/components/layout/CommonLayout';
 import './globals.css';
 
 export default function RootLayout({
@@ -7,7 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body>{children}</body>
+      <CommonLayout>{children}</CommonLayout>
     </html>
   );
 }
