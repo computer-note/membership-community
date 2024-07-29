@@ -13,10 +13,10 @@ export type UserInfoType = {
 export type PostItemType = {
   id: string;
   title: string;
-  creatorNickname: string;
   createdAt: Date;
   visitedCount: number;
-  rank: RankType;
+  board: BoardType;
+  userInfo: UserInfoType;
 };
 
 export type PostDetailType = {
@@ -27,8 +27,8 @@ export type PostDetailType = {
   itemImg: string;
   visitedCount: number;
   userInfo: UserInfoType;
-  rank: RankType;
   board: BoardType;
+  content: string;
 };
 
 export type PostFormType = {
@@ -44,6 +44,7 @@ export type CommentType = {
   createdAt: Date;
   userInfo: UserInfoType;
   postId: string;
+  content: string;
 };
 
 export type CommentFormType = {
