@@ -11,9 +11,11 @@
   "dependencies": {
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.0",
+    "login": "^0.8.0",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "supabase": "^1.187.10"
   },
   "devDependencies": {
     "@types/node": "^20",
