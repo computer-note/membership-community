@@ -6,7 +6,8 @@ export type UserInfoType = {
   profile_img: string;
   last_visited: Date;
   visit_count: number;
-  rank: RankType;
+  rank_name: string;
+  rank_level: number;
   is_banned: boolean;
 };
 
@@ -16,8 +17,11 @@ export type PostItemType = {
   title: string;
   created_at: Date;
   visited_count: number;
-  board: BoardType;
-  userInfo: UserInfoType;
+  board_name: string;
+  board_rank_level: number;
+  user_nickname: string;
+  user_rank_name: string;
+  user_id: string;
 };
 
 export type PostDetailType = {
@@ -28,8 +32,10 @@ export type PostDetailType = {
   item_img: string;
   visited_count: number;
   content: string;
-  userInfo: UserInfoType;
-  board: BoardType;
+  user_nickname: string;
+  user_rank_name: string;
+  user_id: string;
+  board_name: string;
 };
 
 export type PostFormType = {
@@ -37,15 +43,16 @@ export type PostFormType = {
   item_img: string;
   content: string;
   user_id: string;
-  board_id: string;
+  board_id: number;
 };
 
 export type CommentType = {
   id: string; //uuid
   created_at: Date;
   content: string;
-  post_id: string;
-  userInfo: UserInfoType;
+  user_id: string;
+  user_nickname: string;
+  user_rank_name: string;
 };
 
 export type CommentFormType = {
