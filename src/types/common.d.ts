@@ -3,8 +3,8 @@ export type UserInfoType = {
   email: string;
   created_at: Date;
   nickname: string;
-  profile_img: string;
-  last_visited: Date;
+  profile_img: string | null;
+  last_visited: Date | null;
   visit_count: number;
   rank_name: string;
   rank_level: number;

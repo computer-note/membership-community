@@ -182,7 +182,7 @@ export class SupabaseApi {
         rank,
       }) => ({
         created_at: new Date(created_at),
-        last_visited: new Date(last_visited),
+        last_visited: last_visited ? new Date(last_visited!) : null,
         email,
         id,
         is_banned,
@@ -194,10 +194,16 @@ export class SupabaseApi {
       })
     );
 
-    console.log('dbUserInfoList ↓');
-    console.dir(dbUserInfoList);
-
     return appUserInfoList ?? [];
+  }
+
+  static async getUser(): Promise<UserInfoType> {
+    const supabase = createClient();
+
+    const { data: dbUser, error } = await supabase
+      .from('users')
+      .select()
+      .single();
   }
 
   static async test() {
