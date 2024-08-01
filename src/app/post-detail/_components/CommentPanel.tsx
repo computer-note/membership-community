@@ -1,4 +1,4 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 import CommentList from './CommentList';
 import CommentWrite from './CommentWrite';
 
@@ -7,12 +7,12 @@ interface Props {
 }
 
 async function CommentPanel({ postId }: Props) {
-  const commentList = await SupabaseApi.getCommentList(postId);
+  const commentList = await SupabaseServerApi.getCommentList(postId);
 
   return (
     <section>
       <CommentList commentList={commentList} />
-      <CommentWrite />
+      <CommentWrite postId={postId} />
     </section>
   );
 }

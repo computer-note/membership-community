@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import BoardList from '../BoardList';
 import InfoPanel from '../InfoPanel';
 import AccountDelete from './AccountDelete';

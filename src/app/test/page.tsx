@@ -1,7 +1,7 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 
 async function page() {
-  const res = await SupabaseApi.getUser();
+  const res = await SupabaseServerApi.getUser();
 
   console.log('res ↓');
   console.dir(res);

@@ -9,7 +9,7 @@ import { type PaginationInfoType } from '@/types/utils';
 
 import { createClient } from '@/supabase/server';
 
-export class SupabaseApi {
+export class SupabaseServerApi {
   static async getPostList(
     boardId: number,
     paginationInfo?: PaginationInfoType
@@ -161,7 +161,6 @@ export class SupabaseApi {
 
   static async getUserList(): Promise<UserInfoType[]> {
     const supabase = createClient();
-
     const { data: dbUserInfoList, error } = await supabase.from(
       'users'
     ).select(`

@@ -1,8 +1,8 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 import Link from 'next/link';
 
 async function BoardList() {
-  const boardList = await SupabaseApi.getBoardList();
+  const boardList = await SupabaseServerApi.getBoardList();
 
   return (
     <section className='flex flex-col'>

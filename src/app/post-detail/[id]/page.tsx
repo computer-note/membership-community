@@ -1,4 +1,4 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 import PostDetail from '../_components/PostDetail';
 import CommentPanel from '../_components/CommentPanel';
 
@@ -8,7 +8,7 @@ interface Props {
 
 async function PostDetailPage({ params }: Props) {
   const postId = params.id;
-  const postDetail = await SupabaseApi.getPostDetail(postId);
+  const postDetail = await SupabaseServerApi.getPostDetail(postId);
 
   if (!postDetail) {
     return <section>Error Fetching Post Detail</section>;
