@@ -1,5 +1,6 @@
 import {
   BoardType,
+  CommentType,
   PostDetailType,
   PostItemType,
   UserInfoType,
@@ -124,8 +125,38 @@ export class SupabaseApi {
     return appPostDetail;
   }
 
-  static async getCommentList(postId: string) {
-    return null;
+  static async getCommentList(
+    postId: string
+  ): Promise<CommentType[]> {
+    const supabase = createClient();
+
+    const { data: dbCommentList, error } = await supabase
+      .from('comments')
+      .select(
+        `
+      id, created_at, content, 
+      user: users (
+        id, nickname, 
+        rank: ranks (
+          name
+        )
+      )
+    `
+      )
+      .eq('post_id', postId);
+
+    const appCommentList = dbCommentList?.map<CommentType>(
+      ({ content, created_at, id, user }) => ({
+        content,
+        created_at: new Date(created_at),
+        id,
+        user_id: user?.id!,
+        user_nickname: user?.nickname!,
+        user_rank_name: user?.rank?.name!,
+      })
+    );
+
+    return appCommentList ?? [];
   }
 
   static async getUserList(): Promise<UserInfoType[]> {

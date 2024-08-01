@@ -18,7 +18,7 @@ async function PostDetailPage({ params }: Props) {
   return (
     <main className='flex flex-col gap-5'>
       <PostDetail postDetail={postDetail} />
-      {/* <CommentPanel postId={postId} /> */}
+      <CommentPanel postId={postId} />
     </main>
   );
 }

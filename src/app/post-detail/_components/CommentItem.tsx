@@ -5,16 +5,22 @@ interface Props {
 }
 
 function CommentItem({ commentItem }: Props) {
-  const { content, createdAt, id, postId, userInfo } = commentItem;
+  const {
+    content,
+    created_at,
+    id,
+    user_id,
+    user_nickname,
+    user_rank_name,
+  } = commentItem;
 
   return (
-    <div>
-      <span>댓글({id}).</span>
-      <span>작성일: {createdAt.toDateString()}</span>
-      <span>작성자: {userInfo.nickname}</span>
+    <div className='flex flex-col items-start'>
+      <span>작성일: {created_at.toDateString()}</span>
+      <span>작성자: {`${user_nickname} (${user_rank_name})`} </span>
       <span>댓글내용: {content}</span>
 
-      <button>본인작성댓글이면 수정삭제 버튼을 표시합니다.</button>
+      <button>수정삭제</button>
     </div>
   );
 }
