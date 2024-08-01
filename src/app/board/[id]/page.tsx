@@ -6,7 +6,7 @@ interface Props {
 }
 
 async function BoardPage({ params: { id } }: Props) {
-  const postList = await SupabaseApi.getPostList(id);
+  const postList = await SupabaseApi.getPostList(+id);
   return (
     <main>
       <div>BoardPage {id}</div>
