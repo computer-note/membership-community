@@ -28,7 +28,7 @@ export type PostDetailType = {
   id: string; //uuid
   title: string;
   created_at: Date;
-  price: number;
+  price: string;
   item_img: string;
   visited_count: number;
   content: string;
