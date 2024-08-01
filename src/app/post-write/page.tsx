@@ -1,5 +1,5 @@
 function PostWritePage() {
-  return <>PostWritePage</>;
+  return <section>PostWritePage</section>;
 }
 
 export default PostWritePage;

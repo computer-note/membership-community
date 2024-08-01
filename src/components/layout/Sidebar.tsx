@@ -5,11 +5,11 @@ import AccountDelete from './AccountDelete';
 
 function Sidebar() {
   return (
-    <section className='flex flex-col bg-red-300'>
+    <aside className='flex flex-col bg-red-300'>
       <InfoPanel />
       <BoardList />
       <AccountDelete />
-    </section>
+    </aside>
   );
 }
 

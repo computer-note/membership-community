@@ -8,10 +8,10 @@ interface Props {
 async function BoardPage({ params: { id } }: Props) {
   const postList = await SupabaseApi.getPostList(+id);
   return (
-    <main>
+    <section>
       <div>BoardPage {id}</div>
       <PostList postList={postList} />
-    </main>
+    </section>
   );
 }
 

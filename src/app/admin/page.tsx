@@ -5,9 +5,9 @@ async function AdminPage() {
   const userList = await SupabaseApi.getUserList();
 
   return (
-    <main>
+    <section>
       <UserList userList={userList} />
-    </main>
+    </section>
   );
 }
 
