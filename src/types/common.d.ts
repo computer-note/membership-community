@@ -70,7 +70,8 @@ export type RankType = {
 export type BoardType = {
   id: number; //int2 type
   name: string;
-  rank: RankType;
+  rank_level: number;
+  rank_name: string;
 };
 
 export type LoginFormInfo = {
