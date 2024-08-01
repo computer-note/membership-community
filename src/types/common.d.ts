@@ -1,66 +1,67 @@
 export type UserInfoType = {
-  id: string;
+  id: string; //uuid
   email: string;
-  createdAt: Date;
+  created_at: Date;
   nickname: string;
-  profileImg: string;
-  lastVisited: Date;
-  visitCount: number;
+  profile_img: string;
+  last_visited: Date;
+  visit_count: number;
   rank: RankType;
+  is_banned: boolean;
 };
 
 //포스트 요약 정보 (포스트 리스트에서 사용)
 export type PostItemType = {
-  id: string;
+  id: string; //uuid
   title: string;
-  createdAt: Date;
-  visitedCount: number;
+  created_at: Date;
+  visited_count: number;
   board: BoardType;
   userInfo: UserInfoType;
 };
 
 export type PostDetailType = {
-  id: string;
+  id: string; //uuid
   title: string;
-  createdAt: Date;
+  created_at: Date;
   price: number;
-  itemImg: string;
-  visitedCount: number;
+  item_img: string;
+  visited_count: number;
+  content: string;
   userInfo: UserInfoType;
   board: BoardType;
-  content: string;
 };
 
 export type PostFormType = {
   title: string;
-  itemImg: string;
+  item_img: string;
   content: string;
-  userId: string;
-  boardId: string;
+  user_id: string;
+  board_id: string;
 };
 
 export type CommentType = {
-  id: string;
-  createdAt: Date;
-  userInfo: UserInfoType;
-  postId: string;
+  id: string; //uuid
+  created_at: Date;
   content: string;
+  post_id: string;
+  userInfo: UserInfoType;
 };
 
 export type CommentFormType = {
   content: string;
-  userId: string;
-  postId: string;
+  user_id: string;
+  post_id: string;
 };
 
 export type RankType = {
-  id: string;
+  id: number; //int2 type
   name: string;
   level: number;
 };
 
 export type BoardType = {
-  id: string;
+  id: number; //int2 type
   name: string;
   rank: RankType;
 };
@@ -74,5 +75,5 @@ export type SignupFormType = {
   email: string;
   password: string;
   nickname: string;
-  profileImg: string;
+  profile_img: string;
 };
