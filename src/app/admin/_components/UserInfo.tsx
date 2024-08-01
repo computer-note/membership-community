@@ -6,24 +6,27 @@ interface Props {
 
 function UserInfo({ userInfo }: Props) {
   const {
-    createdAt,
+    created_at,
     email,
     id,
-    lastVisited,
+    is_banned,
+    last_visited,
     nickname,
-    profileImg,
-    rank,
-    visitCount,
+    profile_img,
+    rank_level,
+    rank_name,
+    visit_count,
   } = userInfo;
 
   return (
     <div>
-      <span>가입일자 {createdAt.toDateString()}</span>
-      <span>이메일 {email}</span>
       <span>닉네임 {nickname}</span>
-      <span>등급 {rank.name}</span>
-      <span>카페방문수 {visitCount}</span>
-      <span>마지막방문일 {lastVisited.toDateString()}</span>
+      <span>이메일 {email}</span>
+      <span>등급 {rank_name}</span>
+      <span>카페방문수 {visit_count}</span>
+      <span>정지여부: {is_banned ? 'YES' : 'NO'}</span>
+      <span>가입일자 {created_at.toDateString()}</span>
+      <span>마지막방문일 {last_visited.toDateString()}</span>
     </div>
   );
 }

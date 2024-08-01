@@ -160,7 +160,44 @@ export class SupabaseApi {
   }
 
   static async getUserList(): Promise<UserInfoType[]> {
-    return [];
+    const supabase = createClient();
+
+    const { data: dbUserInfoList, error } = await supabase.from(
+      'users'
+    ).select(`
+      id, email, created_at, nickname, profile_img, last_visited, visit_count, is_banned,
+      rank: ranks (name, level)
+    `);
+
+    const appUserInfoList = dbUserInfoList?.map<UserInfoType>(
+      ({
+        created_at,
+        email,
+        id,
+        is_banned,
+        last_visited,
+        nickname,
+        profile_img,
+        visit_count,
+        rank,
+      }) => ({
+        created_at: new Date(created_at),
+        last_visited: new Date(last_visited),
+        email,
+        id,
+        is_banned,
+        nickname,
+        profile_img,
+        visit_count,
+        rank_level: rank?.level!,
+        rank_name: rank?.name!,
+      })
+    );
+
+    console.log('dbUserInfoList ↓');
+    console.dir(dbUserInfoList);
+
+    return appUserInfoList ?? [];
   }
 
   static async test() {
