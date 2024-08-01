@@ -8,6 +8,7 @@ async function BoardList() {
     <section className='flex flex-col'>
       {boardList.map(board => (
         <Link
+          key={board.id}
           href={`/board/${board.id}`}
         >{`${board.name} (${board.rank_name}) `}</Link>
       ))}
