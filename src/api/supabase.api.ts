@@ -57,18 +57,15 @@ export class SupabaseApi {
     const { data: dbBoardList, error } = await supabase.from('boards')
       .select(`
         name, id,
-        ranks (name, level, id)
+        rank: ranks (name, level)
       `);
 
     const apiBoardList = dbBoardList?.map<BoardType>(
-      ({ id, name, ranks }) => ({
-        id: id,
-        name: name,
-        rank: {
-          id: ranks?.id!,
-          level: ranks?.level!,
-          name: ranks?.name!,
-        },
+      ({ id, name, rank }) => ({
+        id,
+        name,
+        rank_level: rank?.level!,
+        rank_name: rank?.name!,
       })
     );
 

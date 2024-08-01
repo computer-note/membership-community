@@ -9,7 +9,7 @@ async function BoardList() {
       {boardList.map(board => (
         <Link
           href={`/board/${board.id}`}
-        >{`게시판 제목: ${board.name}으로`}</Link>
+        >{`${board.name} (${board.rank_name}) `}</Link>
       ))}
     </section>
   );
