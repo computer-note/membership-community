@@ -9,7 +9,7 @@ interface Props {
 
 async function PostDetailPage({ params }: Props) {
   const postId = params.id;
-  const postDetail = await SupabaseApi.getPostDetail(params.id);
+  const postDetail = await SupabaseApi.getPostDetail(postId);
 
   if (!postDetail) {
     return <main>Error Fetching Post Detail</main>;
@@ -18,8 +18,7 @@ async function PostDetailPage({ params }: Props) {
   return (
     <main className='flex flex-col gap-5'>
       <PostDetail postDetail={postDetail} />
-      <CommentPanel postId={postId} />
-      <PostList />
+      {/* <CommentPanel postId={postId} /> */}
     </main>
   );
 }

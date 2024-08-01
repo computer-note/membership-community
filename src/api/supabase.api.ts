@@ -6,17 +6,6 @@ import {
 } from '@/types/common';
 import { type PaginationInfoType } from '@/types/utils';
 
-//dummy datas
-import {
-  comment1,
-  comment2,
-  comment3,
-  comment4,
-  postDetail1,
-  postDetail2,
-  userInfo1,
-  userInfo2,
-} from '@/dummy-data/dummy-data';
 import { createClient } from '@/supabase/server';
 
 export class SupabaseApi {
@@ -28,16 +17,17 @@ export class SupabaseApi {
     const { data: dbPostList, error } = await supabase
       .from('posts')
       .select(
-        `id, title, created_at, visited_count,
+        `
+        id, title, created_at, visited_count,
         board: boards ( 
           id, name,
-          ranks ( 
+          rank: ranks ( 
             name, level, id 
           )
         ),
         user: users (
           id, nickname, 
-          ranks ( 
+          rank: ranks ( 
             name, level, id
           )
         )
@@ -52,22 +42,21 @@ export class SupabaseApi {
         visited_count,
         created_at: new Date(created_at),
         board_name: board?.name!,
-        board_rank_level: board?.ranks?.level!,
+        board_rank_level: board?.rank?.level!,
         user_nickname: user?.nickname!,
-        user_rank_name: user?.ranks?.name!,
+        user_rank_name: user?.rank?.name!,
         user_id: user?.id!,
       })
     );
 
-    return apiPostList!;
+    return apiPostList ?? [];
   }
 
   static async getBoardList(): Promise<BoardType[]> {
     const supabase = createClient();
     const { data: dbBoardList, error } = await supabase.from('boards')
       .select(`
-        name,
-        id,
+        name, id,
         ranks (name, level, id)
       `);
 
@@ -83,39 +72,67 @@ export class SupabaseApi {
       })
     );
 
-    return apiBoardList!;
+    return apiBoardList ?? [];
   }
 
   static async getPostDetail(
     postId: string
   ): Promise<PostDetailType | null> {
-    const allPostDetails = [postDetail1, postDetail2];
+    const supabase = createClient();
+    const { data: dbPostDetail, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        id, title, created_at, price, item_img, visited_count, content,
+        user: users (
+          nickname, id,
+          rank: ranks (
+            name
+          )
+        ),
+        board: boards (
+          name
+        )
+      `
+      )
+      .eq('id', postId)
+      .single();
 
-    const postDetailByPostId = allPostDetails.find(
-      postDetail => postDetail.id === postId
-    );
+    const {
+      content,
+      created_at,
+      id,
+      item_img,
+      price,
+      title,
+      visited_count,
+      board,
+      user,
+    } = dbPostDetail!;
 
-    if (!postDetailByPostId) {
-      return null;
-    }
+    const appPostDetail: PostDetailType = {
+      content,
+      created_at: new Date(created_at),
+      id,
+      item_img,
+      price,
+      title,
+      visited_count,
+      board_name: board?.name!,
+      user_id: user?.id!,
+      user_nickname: user?.nickname!,
+      user_rank_name: user?.rank?.name!,
+    };
 
-    return postDetailByPostId;
+    return appPostDetail;
   }
 
   static async getCommentList(postId: string) {
-    const allComments = [comment1, comment2, comment3, comment4];
-
-    const commentList = allComments.filter(
-      comment => comment.postId === postId
-    );
-
-    return commentList;
+    return null;
   }
 
   static async getUserList(): Promise<UserInfoType[]> {
-    const allUserList = [userInfo1, userInfo2];
-
-    return allUserList;
+    return [];
   }
 
   static async test() {
