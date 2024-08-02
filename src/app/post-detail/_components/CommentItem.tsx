@@ -1,8 +1,8 @@
 'use client';
 
-import { CommentType, UserInfoType } from '@/types/common';
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
-import { useRef } from 'react';
+import { type CommentType, type UserInfoType } from '@/types/common';
+import { type FormEvent, type KeyboardEvent, useRef } from 'react';
 
 interface Props {
   commentItem: CommentType;
@@ -19,11 +19,11 @@ function CommentItem({ commentItem, user }: Props) {
     user_rank_name,
   } = commentItem;
 
-  const commentInputRef = useRef<HTMLSpanElement | null>(null);
+  const commentInputRef = useRef<HTMLInputElement | null>(null);
 
   async function handleDeleteComment() {
-    //Todo. 에러처리 로직추가
     await SupabaseBrowserApi.deleteComment(comment_id);
+    //Todo. 에러처리 로직추가
 
     alert('댓글이 삭제되었습니다.');
   }
@@ -31,49 +31,48 @@ function CommentItem({ commentItem, user }: Props) {
   function handleClickModify() {
     const commentInput = commentInputRef.current!;
 
-    if (!commentInput.isContentEditable) {
-      commentInput.contentEditable = 'true';
-      commentInput.focus();
-      commentInput.addEventListener('keydown', handleModifyInput);
-    }
+    commentInput.readOnly = false;
+    commentInput.focus();
   }
 
-  // 리액트의 방식
-  //   수정버튼을 누르면 수정 UI를 조건적으로 나타나게 하는 방식
-
-  // 리액트에서 특수한 케이스가 아니면 addEventListener 사용 지양
-  //   useEffect에서 addEventLister - removeEventListener
-
-  async function handleModifyInput(e: globalThis.KeyboardEvent) {
-    if (e.code === 'Enter') {
-      const commentInput = commentInputRef.current!;
-
-      await SupabaseBrowserApi.modifyComment({
-        comment_id,
-        content: commentInput.innerText,
-      });
-
-      commentInput.contentEditable = 'false';
-      commentInput.removeEventListener('keydown', handleModifyInput);
-
-      alert('댓글이 수정되었습니다.');
-    }
-
+  async function handleKeydown(e: KeyboardEvent) {
     if (e.code === 'Escape') {
       const commentInput = commentInputRef.current!;
-      commentInput.innerText = content;
 
-      commentInput.contentEditable = 'false';
-      commentInput.removeEventListener('keydown', handleModifyInput);
+      commentInput.innerText = content; //원래 있던 내용으로 복구
+      commentInput.readOnly = true;
     }
   }
-  //이 게시물이 사용자의
+
+  async function handleModifySubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const commentInput = commentInputRef.current!;
+
+    await SupabaseBrowserApi.modifyComment({
+      comment_id,
+      content: commentInput.value,
+    });
+
+    alert('댓글이 수정되었습니다.');
+    commentInput.readOnly = true;
+  }
+
   return (
     <div className='flex flex-col items-start w-[80%]'>
       <div>작성일: {created_at.toDateString()}</div>
       <div>작성자: {`${user_nickname} (${user_rank_name})`} </div>
       <div>
-        댓글내용: <span ref={commentInputRef}>{content}</span>
+        댓글내용:
+        <form onSubmit={handleModifySubmit}>
+          <input
+            ref={commentInputRef}
+            defaultValue={content}
+            onKeyDown={handleKeydown}
+            readOnly
+          />
+          <button>수정완료</button>
+        </form>
       </div>
 
       {user?.id === user_id ? (
