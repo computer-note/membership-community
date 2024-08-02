@@ -1,5 +1,5 @@
 import { createClient } from '@/supabase/client';
-import { UserInfoType } from '@/types/common';
+import { CommentFormType, UserInfoType } from '@/types/common';
 
 export class SupabaseBrowserApi {
   static async getUser(): Promise<UserInfoType> {
@@ -44,7 +44,15 @@ export class SupabaseBrowserApi {
     return appUser ?? null;
   }
 
-  static async createComment(content, userId, postId) {
+  static async createComment({
+    content,
+    post_id,
+    user_id,
+  }: CommentFormType) {
     const supabase = createClient();
+
+    await supabase
+      .from('comments')
+      .insert({ post_id, user_id, content });
   }
 }
