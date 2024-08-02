@@ -39,7 +39,7 @@ function CommentItem({ commentItem, user }: Props) {
     if (e.code === 'Escape') {
       const commentInput = commentInputRef.current!;
 
-      commentInput.innerText = content; //원래 있던 내용으로 복구
+      commentInput.value = content; //원래 있던 내용으로 복구
       commentInput.readOnly = true;
     }
   }
