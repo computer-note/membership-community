@@ -42,6 +42,7 @@ export type PostFormType = {
   title: string;
   item_img: string;
   content: string;
+  price: string;
   user_id: string;
   board_id: number;
 };
