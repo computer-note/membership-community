@@ -1,7 +1,7 @@
 'use client';
 
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
-import { CommentFormType } from '@/types/common';
+import { CommentCreateFormType } from '@/types/common';
 import { useState } from 'react';
 
 interface Props {
@@ -23,7 +23,7 @@ function CommentWrite({ postId }: Props) {
 
     const user = await SupabaseBrowserApi.getUser();
 
-    const commentForm: CommentFormType = {
+    const commentForm: CommentCreateFormType = {
       content: comment,
       post_id: postId,
       user_id: user.id,
