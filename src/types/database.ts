@@ -79,7 +79,7 @@ export type Database = {
       };
       posts: {
         Row: {
-          board_id: number | null;
+          board_id: number;
           content: string;
           created_at: string;
           id: string;
@@ -90,9 +90,9 @@ export type Database = {
           visited_count: number;
         };
         Insert: {
-          board_id?: number | null;
+          board_id: number;
           content: string;
-          created_at: string;
+          created_at?: string;
           id?: string;
           item_img?: string;
           price?: string;
@@ -101,7 +101,7 @@ export type Database = {
           visited_count?: number;
         };
         Update: {
-          board_id?: number | null;
+          board_id?: number;
           content?: string;
           created_at?: string;
           id?: string;
