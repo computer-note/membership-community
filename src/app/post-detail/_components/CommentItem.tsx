@@ -1,15 +1,15 @@
 'use client';
 
 import { CommentType, UserInfoType } from '@/types/common';
-import { useAuthContext } from './../../../providers/AuthContextProvider';
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 import { useRef } from 'react';
 
 interface Props {
   commentItem: CommentType;
+  user: UserInfoType | null;
 }
 
-function CommentItem({ commentItem }: Props) {
+function CommentItem({ commentItem, user }: Props) {
   const {
     content,
     created_at,
@@ -19,7 +19,6 @@ function CommentItem({ commentItem }: Props) {
     user_rank_name,
   } = commentItem;
 
-  const user = useAuthContext();
   const commentInputRef = useRef<HTMLSpanElement | null>(null);
 
   async function handleDeleteComment() {
@@ -38,6 +37,12 @@ function CommentItem({ commentItem }: Props) {
       commentInput.addEventListener('keydown', handleModifyInput);
     }
   }
+
+  // 리액트의 방식
+  //   수정버튼을 누르면 수정 UI를 조건적으로 나타나게 하는 방식
+
+  // 리액트에서 특수한 케이스가 아니면 addEventListener 사용 지양
+  //   useEffect에서 addEventLister - removeEventListener
 
   async function handleModifyInput(e: globalThis.KeyboardEvent) {
     if (e.code === 'Enter') {
@@ -62,7 +67,7 @@ function CommentItem({ commentItem }: Props) {
       commentInput.removeEventListener('keydown', handleModifyInput);
     }
   }
-
+  //이 게시물이 사용자의
   return (
     <div className='flex flex-col items-start w-[80%]'>
       <div>작성일: {created_at.toDateString()}</div>
