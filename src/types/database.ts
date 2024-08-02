@@ -44,21 +44,21 @@ export type Database = {
           created_at: string;
           id: string;
           post_id: string;
-          user_id: string | null;
+          user_id: string;
         };
         Insert: {
           content?: string;
-          created_at: string;
+          created_at?: string;
           id?: string;
           post_id: string;
-          user_id?: string | null;
+          user_id: string;
         };
         Update: {
           content?: string;
           created_at?: string;
           id?: string;
           post_id?: string;
-          user_id?: string | null;
+          user_id?: string;
         };
         Relationships: [
           {
