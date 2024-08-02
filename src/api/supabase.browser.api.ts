@@ -1,5 +1,9 @@
 import { createClient } from '@/supabase/client';
-import { CommentFormType, UserInfoType } from '@/types/common';
+import {
+  CommentCreateFormType,
+  CommentModifyFormType,
+  UserInfoType,
+} from '@/types/common';
 
 export class SupabaseBrowserApi {
   static async getUser(): Promise<UserInfoType> {
@@ -48,11 +52,29 @@ export class SupabaseBrowserApi {
     content,
     post_id,
     user_id,
-  }: CommentFormType) {
+  }: CommentCreateFormType) {
     const supabase = createClient();
 
     await supabase
       .from('comments')
       .insert({ post_id, user_id, content });
+  }
+
+  static async deleteComment(comment_id: string) {
+    const supabase = createClient();
+
+    await supabase.from('comments').delete().eq('id', comment_id);
+  }
+
+  static async modifyComment({
+    content,
+    comment_id,
+  }: CommentModifyFormType) {
+    const supabase = createClient();
+
+    await supabase
+      .from('comments')
+      .update({ content })
+      .eq('id', comment_id);
   }
 }
