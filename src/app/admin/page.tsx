@@ -1,13 +1,13 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 import UserList from './_components/UserList';
 
 async function AdminPage() {
-  const userList = await SupabaseApi.getUserList();
+  const userList = await SupabaseServerApi.getUserList();
 
   return (
-    <main>
+    <section>
       <UserList userList={userList} />
-    </main>
+    </section>
   );
 }
 

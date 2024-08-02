@@ -6,24 +6,26 @@ interface Props {
 
 function PostDetail({ postDetail }: Props) {
   const {
-    board,
+    board_name,
     content,
-    createdAt,
+    created_at,
     id,
-    itemImg,
+    item_img,
     price,
     title,
-    userInfo,
-    visitedCount,
+    user_id,
+    user_nickname,
+    user_rank_name,
+    visited_count,
   } = postDetail;
 
   return (
-    <section className='flex flex-col gap-1'>
-      <span>게시판: {board.name}</span>
-      <span>작성자: {userInfo.nickname}</span>
-      <span>작성자 등급: {userInfo.rank.name}</span>
-      <span>작성일: {createdAt.toDateString()}</span>
-      <span>조회수: {visitedCount}</span>
+    <section key={id} className='flex flex-col gap-1'>
+      <span>게시판: {board_name}</span>
+      <span>작성자: {user_nickname}</span>
+      <span>작성자 등급: {user_rank_name}</span>
+      <span>작성일: {created_at.toDateString()}</span>
+      <span>조회수: {visited_count}</span>
       <span>제목: {title}</span>
       <span>가격: {price}</span>
       <span>내용: {content}</span>

@@ -1,5 +1,5 @@
 function LoginPage() {
-  return <>LoginPage</>;
+  return <section>LoginPage</section>;
 }
 
 export default LoginPage;

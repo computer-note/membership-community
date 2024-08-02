@@ -6,17 +6,25 @@ interface Props {
 }
 
 function PostItem({ postItem }: Props) {
-  const { id, title, userInfo, board, createdAt, visitedCount } =
-    postItem;
+  const {
+    board_name,
+    board_rank_level,
+    created_at,
+    id: post_id,
+    title,
+    user_id,
+    user_nickname,
+    user_rank_name,
+    visited_count,
+  } = postItem;
 
   return (
-    <Link className='flex gap-5' href={`/post-detail/${id}`}>
-      <span>식별번호 {id}</span>
+    <Link className='flex gap-5' href={`/post-detail/${post_id}`}>
       <span>제목 {title}</span>
-      <span>등급 {userInfo.rank.name}</span>
-      <span>작성자 {userInfo.nickname}</span>
-      <span>작성일 {createdAt.toDateString()}</span>
-      <span>조회수 {visitedCount}</span>
+      <span>등급 {user_rank_name}</span>
+      <span>작성자 {user_nickname}</span>
+      <span>작성일 {created_at.toDateString()}</span>
+      <span>조회수 {visited_count}</span>
     </Link>
   );
 }

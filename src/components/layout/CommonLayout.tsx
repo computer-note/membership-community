@@ -9,13 +9,11 @@ import Sidebar from './Sidebar';
 function CommonLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <body className='flex flex-col gap-5'>
-        <Header />
-        <div className='flex gap-5'>
-          <Sidebar />
-          {children}
-        </div>
-      </body>
+      <Header />
+      <main className='flex gap-5'>
+        <Sidebar />
+        {children}
+      </main>
     </>
   );
 }

@@ -1,17 +1,17 @@
 import PostList from '../_components/PostList';
-import { SupabaseApi } from './../../../api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 
 interface Props {
   params: { id: string };
 }
 
 async function BoardPage({ params: { id } }: Props) {
-  const postList = await SupabaseApi.getPostList(id);
+  const postList = await SupabaseServerApi.getPostList(+id);
   return (
-    <main>
+    <section>
       <div>BoardPage {id}</div>
       <PostList postList={postList} />
-    </main>
+    </section>
   );
 }
 

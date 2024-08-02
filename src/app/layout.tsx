@@ -8,7 +8,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <CommonLayout>{children}</CommonLayout>
+      <body className='flex flex-col gap-5'>
+        <CommonLayout>{children}</CommonLayout>
+      </body>
     </html>
   );
 }

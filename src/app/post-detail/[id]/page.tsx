@@ -1,6 +1,5 @@
-import { SupabaseApi } from '@/api/supabase.api';
+import { SupabaseServerApi } from '@/api/supabase.server.api';
 import PostDetail from '../_components/PostDetail';
-import PostList from '../_components/PostList';
 import CommentPanel from '../_components/CommentPanel';
 
 interface Props {
@@ -9,18 +8,17 @@ interface Props {
 
 async function PostDetailPage({ params }: Props) {
   const postId = params.id;
-  const postDetail = await SupabaseApi.getPostDetail(params.id);
+  const postDetail = await SupabaseServerApi.getPostDetail(postId);
 
   if (!postDetail) {
-    return <main>Error Fetching Post Detail</main>;
+    return <section>Error Fetching Post Detail</section>;
   }
 
   return (
-    <main className='flex flex-col gap-5'>
+    <section className='flex flex-col gap-5'>
       <PostDetail postDetail={postDetail} />
       <CommentPanel postId={postId} />
-      <PostList />
-    </main>
+    </section>
   );
 }
 

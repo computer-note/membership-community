@@ -1,5 +1,5 @@
 function SignupPage() {
-  return <>SignupPage</>;
+  return <section>SignupPage</section>;
 }
 
 export default SignupPage;
