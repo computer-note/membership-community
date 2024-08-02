@@ -55,10 +55,15 @@ export type CommentType = {
   user_rank_name: string;
 };
 
-export type CommentFormType = {
+export type CommentCreateFormType = {
   content: string;
   user_id: string;
   post_id: string;
+};
+
+export type CommentModifyFormType = {
+  content: string;
+  comment_id: string;
 };
 
 export type RankType = {
