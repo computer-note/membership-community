@@ -19,7 +19,7 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
     user_rank_name,
   } = commentItem;
 
-  const commentInputRef = useRef<HTMLInputElement | null>(null);
+  const commentInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   async function handleDeleteComment() {
     await SupabaseBrowserApi.deleteComment(comment_id);
@@ -41,6 +41,13 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
 
       commentInput.value = content; //원래 있던 내용으로 복구
       commentInput.readOnly = true;
+    }
+
+    if (e.code === 'Enter') {
+      //Q
+      e.target.form.requestSubmit();
+
+      e.preventDefault();
     }
   }
 
@@ -65,7 +72,8 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
       <div>
         댓글내용:
         <form onSubmit={handleModifySubmit}>
-          <input
+          <textarea
+            className='h-[100px] w-[300px]'
             ref={commentInputRef}
             defaultValue={content}
             onKeyDown={handleKeydown}
