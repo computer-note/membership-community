@@ -1,6 +1,7 @@
 import { CommentType } from '@/types/common';
-import CommentItem from './CommentItem';
+import EditableCommentItem from './EditableCommentItem';
 import { SupabaseServerApi } from '@/api/supabase.server.api';
+import CommentItem from './CommentItem';
 
 interface Props {
   commentList: CommentType[];
@@ -15,11 +16,15 @@ async function CommentList({ commentList }: Props) {
         const isOwnedByLoginUser =
           user && user.id === commentItem.user_id ? true : false;
 
-        return (
+        return isOwnedByLoginUser ? (
+          <EditableCommentItem
+            key={commentItem.id}
+            commentItem={commentItem}
+          />
+        ) : (
           <CommentItem
             key={commentItem.id}
             commentItem={commentItem}
-            isOwnedByLoginUser={isOwnedByLoginUser}
           />
         );
       })}
