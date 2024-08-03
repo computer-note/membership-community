@@ -11,13 +11,18 @@ async function CommentList({ commentList }: Props) {
 
   return (
     <div className='flex flex-col items-center gap-5 p-2'>
-      {commentList.map(commentItem => (
-        <CommentItem
-          key={commentItem.id}
-          commentItem={commentItem}
-          user={user}
-        />
-      ))}
+      {commentList.map(commentItem => {
+        const isOwnedByLoginUser =
+          user && user.id === commentItem.user_id ? true : false;
+
+        return (
+          <CommentItem
+            key={commentItem.id}
+            commentItem={commentItem}
+            isOwnedByLoginUser={isOwnedByLoginUser}
+          />
+        );
+      })}
     </div>
   );
 }

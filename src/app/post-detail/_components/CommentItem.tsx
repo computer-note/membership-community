@@ -6,10 +6,10 @@ import { type FormEvent, type KeyboardEvent, useRef } from 'react';
 
 interface Props {
   commentItem: CommentType;
-  user: UserInfoType | null;
+  isOwnedByLoginUser: boolean;
 }
 
-function CommentItem({ commentItem, user }: Props) {
+function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
   const {
     content,
     created_at,
@@ -75,7 +75,7 @@ function CommentItem({ commentItem, user }: Props) {
         </form>
       </div>
 
-      {user?.id === user_id ? (
+      {isOwnedByLoginUser ? (
         <div>
           <button onClick={handleClickModify}>수정</button>
           <button onClick={handleDeleteComment}>삭제</button>
