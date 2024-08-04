@@ -196,7 +196,7 @@ export class SupabaseServerApi {
     return appUserInfoList ?? [];
   }
 
-  static async getUser(): Promise<UserInfoType> {
+  static async getUser(): Promise<UserInfoType | null> {
     const supabase = createClient();
 
     const { data: dbUser, error } = await supabase
@@ -209,6 +209,10 @@ export class SupabaseServerApi {
       )
       .limit(1)
       .single();
+
+    if (!dbUser) {
+      return null;
+    }
 
     const {
       created_at,
@@ -235,13 +239,6 @@ export class SupabaseServerApi {
       rank_name: rank?.name!,
     };
 
-    return appUser ?? null;
-  }
-
-  static async test() {
-    const supabase = createClient();
-    const result = await supabase.from('ranks').select();
-
-    return result;
+    return appUser;
   }
 }
