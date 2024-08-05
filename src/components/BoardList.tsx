@@ -5,14 +5,14 @@ async function BoardList() {
   const boardList = await SupabaseServerApi.getBoardList();
 
   return (
-    <section className='flex flex-col'>
+    <ul className='px-[10px] mt-6 text-[13px] leading-[21px] '>
       {boardList.map(board => (
-        <Link
-          key={board.id}
-          href={`/board/${board.id}`}
-        >{`${board.name} (${board.rank_name}) `}</Link>
+        <li key={board.id} className='hover:underline'>
+          <img src='/board_prefix.png' className='inline' />
+          <Link href={`/board/${board.id}`}>{`${board.name}`}</Link>
+        </li>
       ))}
-    </section>
+    </ul>
   );
 }
 
