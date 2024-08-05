@@ -4,7 +4,7 @@ import AccountDelete from './AccountDelete';
 
 function Sidebar() {
   return (
-    <aside className='flex flex-col bg-red-300'>
+    <aside className='w-[200px] bg-red-300'>
       <InfoPanel />
       <BoardList />
       <AccountDelete />

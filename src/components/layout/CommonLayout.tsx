@@ -15,7 +15,7 @@ async function CommonLayout({ children }: PropsWithChildren) {
   return (
     <AuthContextProvider value={user}>
       <Header />
-      <main className='flex gap-5'>
+      <main className='w-[1080px] mx-auto'>
         <Sidebar />
         {children}
       </main>

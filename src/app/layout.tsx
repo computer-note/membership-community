@@ -8,7 +8,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='flex flex-col gap-5'>
+      <body className='w-[100%]'>
         <CommonLayout>{children}</CommonLayout>
       </body>
     </html>
