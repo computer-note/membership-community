@@ -15,7 +15,7 @@ async function CommonLayout({ children }: PropsWithChildren) {
   return (
     <AuthContextProvider value={user}>
       <Header />
-      <main className='w-[1080px] mx-auto flex gap-[20px]'>
+      <main className='w-[1080px] mx-auto mt-[40px] flex gap-[20px]'>
         <Sidebar /> {/* 200px */}
         <section className='w-[860px]'>{children}</section>
       </main>
