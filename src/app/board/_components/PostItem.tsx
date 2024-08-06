@@ -1,4 +1,5 @@
 import { PostItemType } from '@/types/common';
+import { extractYYYYMMDD } from '@/utils/date';
 import Link from 'next/link';
 
 interface Props {
@@ -19,13 +20,23 @@ function PostItem({ postItem }: Props) {
   } = postItem;
 
   return (
-    <Link className='flex gap-5' href={`/post-detail/${post_id}`}>
-      <span>제목 {title}</span>
-      <span>등급 {user_rank_name}</span>
-      <span>작성자 {user_nickname}</span>
-      <span>작성일 {created_at.toDateString()}</span>
-      <span>조회수 {visited_count}</span>
-    </Link>
+    <tr className='border-y border-[#f2f2f2] text-[13px] *:py-[4px] *:pl-[12px] *:pr-[18px]'>
+      <td>
+        <Link
+          href={`/post-detail/${post_id}`}
+          className='hover:cursor-pointer hover:underline'
+        >
+          {title}
+        </Link>
+      </td>
+      <td>
+        <span className='hover:cursor-pointer hover:underline'>
+          {user_nickname}
+        </span>
+      </td>
+      <td> {extractYYYYMMDD(created_at)}</td>
+      <td> {visited_count}</td>
+    </tr>
   );
 }
 

@@ -6,11 +6,21 @@ interface Props {
 
 function PostList({ postList }: Props) {
   return (
-    <section>
-      {postList.map(postItem => (
-        <PostItem key={postItem.id} postItem={postItem} />
-      ))}
-    </section>
+    <table>
+      <thead className='border-t border-black'>
+        <tr>
+          <th className='w-[594px]'>제목</th>
+          <th className='w-[118px]'>작성자</th>
+          <th className='w-[80px]'>작성일</th>
+          <th className='w-[60px]'>조회</th>
+        </tr>
+      </thead>
+      <tbody>
+        {postList.map(postItem => (
+          <PostItem key={postItem.id} postItem={postItem} />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
