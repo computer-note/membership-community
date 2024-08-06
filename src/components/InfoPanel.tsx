@@ -46,17 +46,17 @@ function InfoPanel() {
       {selectedTab === 'User' ? (
         <div className='flex gap-[8px] px-[10px] pt-[15px] pb-[12px]'>
           <Image
-            src={'/cafeprofile_58X58_3x.png'}
+            src={'/default_profile.png'}
             width={58}
             height={58}
-            alt='cafe-profile'
+            alt='default_profile'
             className='h-[inherit]'
           />
           <div className='flex flex-col justify-center text-[13px]'>
             <div>
-              <span>유저</span> <span>매니저</span>
+              <span>유저</span> <span>새싹</span>
             </div>
-            <span>에 가입 개설</span>
+            <span>2022.4.3에 가입</span>
           </div>
         </div>
       ) : null}
