@@ -8,9 +8,9 @@ function PostList({ postList }: Props) {
   return (
     <table>
       <thead className='border-t border-black'>
-        <tr>
+        <tr className='*:h-[40px] *:text-[13px]'>
           <th className='w-[594px]'>제목</th>
-          <th className='w-[118px]'>작성자</th>
+          <th className='w-[118px] text-left'>작성자</th>
           <th className='w-[80px]'>작성일</th>
           <th className='w-[60px]'>조회</th>
         </tr>

@@ -20,8 +20,8 @@ function PostItem({ postItem }: Props) {
   } = postItem;
 
   return (
-    <tr className='border-y border-[#f2f2f2] text-[13px] *:py-[4px] *:pl-[12px] *:pr-[18px]'>
-      <td>
+    <tr className='border-y border-[#f2f2f2] text-[13px] *:py-[4px]'>
+      <td className='pl-[12px]'>
         <Link
           href={`/post-detail/${post_id}`}
           className='hover:cursor-pointer hover:underline'
@@ -34,8 +34,8 @@ function PostItem({ postItem }: Props) {
           {user_nickname}
         </span>
       </td>
-      <td> {extractYYYYMMDD(created_at)}</td>
-      <td> {visited_count}</td>
+      <td className='text-center'> {extractYYYYMMDD(created_at)}</td>
+      <td className='text-center'> {visited_count}</td>
     </tr>
   );
 }
