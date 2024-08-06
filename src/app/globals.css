@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+* :not(body, table, thead, tbody, td, th, tr) {
   outline: 1px solid rgba(120, 5, 250, 0.3);
 }
