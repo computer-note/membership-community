@@ -8,3 +8,9 @@ export function extractYYYYMMDD(
 
   return `${date.getFullYear()}${delimiter}${month}${delimiter}${day}`;
 }
+
+export function extractHHMM(date: Date): string {
+  const minute = date.getMinutes().toString().padStart(2, 0);
+
+  return `${date.getHours()}:${minute}`;
+}
