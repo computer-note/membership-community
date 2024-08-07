@@ -10,7 +10,7 @@ async function CommentPanel({ postId }: Props) {
   const commentList = await SupabaseServerApi.getCommentList(postId);
 
   return (
-    <section>
+    <section className='mt-[40px]'>
       <CommentList commentList={commentList} />
       <CommentWrite postId={postId} />
     </section>

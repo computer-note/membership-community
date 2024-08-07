@@ -13,9 +13,9 @@ async function BoardPage({ params: { id } }: Props) {
 
   return (
     <section>
-      <div>BoardPage {id}</div>
-      {user ? <WriteButton id={id} /> : null}
+      <div className='text-[22px] font-semibold'>게시판제목</div>
       <PostList postList={postList} />
+      {user ? <WriteButton id={id} /> : null}
     </section>
   );
 }
