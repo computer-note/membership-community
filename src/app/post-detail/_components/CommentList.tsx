@@ -10,7 +10,7 @@ async function CommentList({ commentList }: Props) {
   const user = await SupabaseServerApi.getUser();
 
   return (
-    <div className='flex flex-col items-center gap-5 p-2'>
+    <ul className='flex flex-col items-center gap-5 p-2'>
       {commentList.map(commentItem => {
         const isOwnedByLoginUser =
           user && user.id === commentItem.user_id ? true : false;
@@ -23,7 +23,7 @@ async function CommentList({ commentList }: Props) {
           />
         );
       })}
-    </div>
+    </ul>
   );
 }
 
