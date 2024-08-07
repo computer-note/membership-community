@@ -6,5 +6,5 @@ export function extractYYYYMMDD(
 
   const day = date.getDate().toString().padStart(2, 0);
 
-  return `${date.getFullYear()}${delimiter}${month}${delimiter}${day}${delimiter}`;
+  return `${date.getFullYear()}${delimiter}${month}${delimiter}${day}`;
 }
