@@ -137,7 +137,7 @@ export class SupabaseServerApi {
         `
       id, created_at, content, 
       user: users (
-        id, nickname, 
+        id, nickname, profile_img,
         rank: ranks (
           name
         )
@@ -154,6 +154,7 @@ export class SupabaseServerApi {
         user_id: user?.id!,
         user_nickname: user?.nickname!,
         user_rank_name: user?.rank?.name!,
+        user_profile_img: user?.profile_img!,
       })
     );
 

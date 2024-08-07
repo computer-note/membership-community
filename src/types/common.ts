@@ -55,6 +55,7 @@ export type CommentType = {
   user_id: string;
   user_nickname: string;
   user_rank_name: string;
+  user_profile_img: string;
 };
 
 export type CommentCreateFormType = {
