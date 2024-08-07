@@ -46,8 +46,6 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
   }
 
   function handleEnterEditMode() {
-    console.log('commentTextAreaRef ↓');
-    console.dir(commentTextAreaRef);
     const commentTextArea = commentTextAreaRef.current!;
 
     setIsInEditMode(true);
