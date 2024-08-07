@@ -1,8 +1,9 @@
 'use client';
 
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
+import { useAuthContext } from '@/providers/AuthContextProvider';
 import { CommentCreateFormType } from '@/types/common';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface Props {
   postId: string;
@@ -10,6 +11,7 @@ interface Props {
 
 function CommentWrite({ postId }: Props) {
   const [comment, setComment] = useState<string>('');
+  const user = useAuthContext();
 
   async function handleCommentCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -21,12 +23,10 @@ function CommentWrite({ postId }: Props) {
 
     const form = e.target as HTMLFormElement;
 
-    const user = await SupabaseBrowserApi.getUser();
-
     const commentForm: CommentCreateFormType = {
       content: comment,
       post_id: postId,
-      user_id: user.id,
+      user_id: user!.id,
     };
 
     await SupabaseBrowserApi.createComment(commentForm);
@@ -36,13 +36,33 @@ function CommentWrite({ postId }: Props) {
     form.reset();
   }
 
+  function handleOnChange(e: ChangeEvent<HTMLTextAreaElement>) {
+    setComment(e.target.value);
+
+    const textArea = e.target as HTMLTextAreaElement;
+    textArea.style.height = textArea.scrollHeight + 'px';
+  }
+
   return (
-    <section>
+    <section className='flex flex-col border-[2px] border-[#0000001a] rounded-[6px] px-[16px] py-[10px] gap-[10px] '>
+      <div>
+        <span className='text-[14px] font-[600] mr-[6px] '>
+          {user?.nickname}
+        </span>
+        <span className='text-[14px]'>{user?.rank_name}</span>
+      </div>
       <form onSubmit={handleCommentCreate}>
-        <button>등록</button>
         <div>
-          <span>댓글입력:</span>
-          <input onChange={e => setComment(e.target.value)} />
+          <textarea
+            onChange={handleOnChange}
+            placeholder='댓글을 남겨보세요'
+            className='resize-none w-[100%] text-[13px]'
+          />
+        </div>
+        <div className='float-right'>
+          <button className='text-[13px] text-[#009f47] bg-[#03c75a1f] rounded-[6px] font-[700] h-[34px] w-[46px]'>
+            등록
+          </button>
         </div>
       </form>
     </section>
