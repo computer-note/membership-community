@@ -11,14 +11,14 @@ async function PostDetailPage({ params }: Props) {
   const postDetail = await SupabaseServerApi.getPostDetail(postId);
 
   if (!postDetail) {
-    return <section>Error Fetching Post Detail</section>;
+    return <>Error Fetching Post Detail</>;
   }
 
   return (
-    <section className='flex flex-col gap-5'>
+    <div className='flex flex-col border border-[#ebecef] rounded-[6px] p-[29px] mr-[5px]'>
       <PostDetail postDetail={postDetail} />
       <CommentPanel postId={postId} />
-    </section>
+    </div>
   );
 }
 
