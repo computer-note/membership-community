@@ -1,5 +1,5 @@
 import { PostItemType } from '@/types/common';
-import { extractYYYYMMDD } from '@/utils/date';
+import { extractYYYYMMDD } from '@/utils/format';
 import Link from 'next/link';
 
 interface Props {
