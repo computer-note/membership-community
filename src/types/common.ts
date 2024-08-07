@@ -35,6 +35,7 @@ export type PostDetailType = {
   user_nickname: string;
   user_rank_name: string;
   user_id: string;
+  user_profile_img: string;
   board_name: string;
 };
 
