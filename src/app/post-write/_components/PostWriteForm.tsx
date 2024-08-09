@@ -62,7 +62,9 @@ function PostWriteForm({ board_id, user_id }: Props) {
         <h1 className='text-[22px] font-[700] mb-[16px]  '>
           카페 글쓰기
         </h1>
-        <button>등록</button>
+        <button className='w-[50px] h-[36px] px-[12px] text-[13px] font-[700] bg-[#03c75a1f] text-[#009F47] rounded-[6px] '>
+          등록
+        </button>
       </div>
 
       <div className='flex flex-col gap-[12px] border border-[#eee] rounded-[14px] px-[20px] py-[28px] mr-[8px]'>
