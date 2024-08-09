@@ -13,12 +13,7 @@ async function PostWritePage({ params: { board_id } }: Props) {
     return <p>로그인한 사용자만 게시글을 작성할 수 있습니다.</p>;
   }
 
-  return (
-    <section>
-      <span>{board_id}</span>
-      <PostWriteForm board_id={+board_id} user_id={user.id} />
-    </section>
-  );
+  return <PostWriteForm board_id={+board_id} user_id={user.id} />;
 }
 
 export default PostWritePage;

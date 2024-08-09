@@ -4,6 +4,7 @@ import { FormEvent } from 'react';
 import { PostFormType } from '@/types/common';
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 import { useRouter } from 'next/navigation';
+import TextInput from './TextInput';
 
 interface Props {
   board_id: number;
@@ -57,20 +58,27 @@ function PostWriteForm({ board_id, user_id }: Props) {
 
   return (
     <form onSubmit={handleWritePost}>
-      <div>
-        <label htmlFor='title'>제목</label> <input name='title' />
+      <div className='flex justify-between border-b border-[#000] pr-[24px] mb-[26px] '>
+        <h1 className='text-[22px] font-[700] mb-[16px]  '>
+          카페 글쓰기
+        </h1>
+        <button>등록</button>
       </div>
-      <div>
-        <label htmlFor='item_img'>이미지</label>{' '}
-        <input name='item_img' />
+
+      <div className='flex flex-col gap-[12px] border border-[#eee] rounded-[14px] px-[20px] py-[28px] mr-[8px]'>
+        <TextInput placeholder='상품명(제목)' name='title' />
+        <TextInput placeholder='가격을 입력하세요' name='price' />
+
+        <div>
+          <label htmlFor='item_img'>이미지</label>
+          <input name='item_img' />
+        </div>
+
+        <div>
+          <label htmlFor='content'>내용</label>
+          <input name='content' />
+        </div>
       </div>
-      <div>
-        <label htmlFor='price'>가격</label> <input name='price' />
-      </div>
-      <div>
-        <label htmlFor='content'>내용</label> <input name='content' />
-      </div>
-      <button>등록</button>
     </form>
   );
 }
