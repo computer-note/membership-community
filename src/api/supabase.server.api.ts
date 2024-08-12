@@ -243,4 +243,46 @@ export class SupabaseServerApi {
 
     return appUser;
   }
+
+  static async getPostListByUserId(
+    userId: string
+  ): Promise<PostItemType[]> {
+    const supabase = createClient();
+
+    const { data } = await supabase
+      .from('posts')
+      .select(
+        `id, title, created_at, visited_count,
+          board: boards (
+            name,
+            rank: ranks (
+              level
+            )
+          ), 
+          user: users (
+            id, nickname, 
+            rank: ranks (
+              name
+            )
+          )
+        `
+      )
+      .eq('user_id', userId);
+
+    const appPostList = data?.map<PostItemType>(
+      ({ created_at, id, title, user, board, visited_count }) => ({
+        id,
+        title,
+        created_at: new Date(created_at),
+        visited_count,
+        user_id: user?.id!,
+        user_nickname: user?.nickname!,
+        user_rank_name: user?.rank?.name!,
+        board_name: board?.name!,
+        board_rank_level: board?.rank?.level!,
+      })
+    );
+
+    return appPostList!;
+  }
 }
