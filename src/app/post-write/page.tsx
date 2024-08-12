@@ -1,5 +1,5 @@
 import { SupabaseServerApi } from '@/api/supabase.server.api';
-import PostWriteForm from '../_components/PostWriteForm';
+import PostWriteForm from './_components/PostWriteForm';
 
 interface Props {
   params: { board_id: string };
