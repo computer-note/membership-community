@@ -20,10 +20,14 @@ function PostItem({ postItem }: Props) {
 
   return (
     <>
-      <td>{extractYYYYMMDD(created_at)}</td>
-      <td>{title}</td>
-      <td>{user_nickname}</td>
-      <td>{visited_count}</td>
+      <td className='pl-[4px]'>
+        <span className='w-[30px] inline-block'>
+          <input type='checkbox' />
+        </span>
+        <span>{title}</span>
+      </td>
+      <td className='text-center'>{extractYYYYMMDD(created_at)}</td>
+      <td className='text-center'>{visited_count}</td>
     </>
   );
 }

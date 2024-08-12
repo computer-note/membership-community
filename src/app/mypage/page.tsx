@@ -8,11 +8,8 @@ async function page() {
     user?.id!
   );
 
-  console.log('postList ↓');
-  console.dir(postList);
-
   return (
-    <section>
+    <section className='w-[860px] pr-[10px]'>
       <PostList postList={postList} />
     </section>
   );
