@@ -7,15 +7,17 @@ interface Props {
   params: { id: string };
 }
 
-async function BoardPage({ params: { id } }: Props) {
-  const postList = await SupabaseServerApi.getPostList(+id);
+async function BoardPage({ params: { id: boardId } }: Props) {
+  const postList = await SupabaseServerApi.getPostListByBoardId(
+    +boardId
+  );
   const user = await SupabaseServerApi.getUser();
 
   return (
     <section>
       <div className='text-[22px] font-semibold'>게시판제목</div>
-      <PostList postList={postList} />
-      {user ? <WriteButton id={id} /> : null}
+      <PostList boardId={+boardId} postList={postList} />
+      {user ? <WriteButton id={boardId} /> : null}
     </section>
   );
 }
