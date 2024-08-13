@@ -2,9 +2,12 @@ import { createClient } from '@/supabase/client';
 import {
   CommentCreateFormType,
   CommentModifyFormType,
+  CommentType,
   PostFormType,
+  PostItemType,
   UserInfoType,
 } from '@/types/common';
+import { PaginationInfoType } from '@/types/utils';
 
 export class SupabaseBrowserApi {
   static async getUser(): Promise<UserInfoType> {
@@ -101,5 +104,125 @@ export class SupabaseBrowserApi {
 
     console.log('error ↓');
     console.dir(error);
+  }
+
+  static async getPostListByUserId(
+    userId: string
+  ): Promise<PostItemType[]> {
+    const supabase = createClient();
+
+    const { data } = await supabase
+      .from('posts')
+      .select(
+        `id, title, created_at, visited_count,
+          board: boards (
+            name,
+            rank: ranks (
+              level
+            )
+          ), 
+          user: users (
+            id, nickname, 
+            rank: ranks (
+              name
+            )
+          )
+        `
+      )
+      .eq('user_id', userId);
+
+    const appPostList = data?.map<PostItemType>(
+      ({ created_at, id, title, user, board, visited_count }) => ({
+        id,
+        title,
+        created_at: new Date(created_at),
+        visited_count,
+        user_id: user?.id!,
+        user_nickname: user?.nickname!,
+        user_rank_name: user?.rank?.name!,
+        board_name: board?.name!,
+        board_rank_level: board?.rank?.level!,
+      })
+    );
+
+    return appPostList!;
+  }
+
+  static async getPostListByBoardId(
+    boardId: number,
+    paginationInfo?: PaginationInfoType
+  ): Promise<PostItemType[]> {
+    const supabase = createClient();
+    const { data: dbPostList, error } = await supabase
+      .from('posts')
+      .select(
+        `
+        id, title, created_at, visited_count,
+        board: boards ( 
+          id, name,
+          rank: ranks ( 
+            name, level, id 
+          )
+        ),
+        user: users (
+          id, nickname, 
+          rank: ranks ( 
+            name, level, id
+          )
+        )
+      `
+      )
+      .eq('board_id', boardId);
+
+    const apiPostList = dbPostList?.map<PostItemType>(
+      ({ id, title, visited_count, created_at, board, user }) => ({
+        id,
+        title,
+        visited_count,
+        created_at: new Date(created_at),
+        board_name: board?.name!,
+        board_rank_level: board?.rank?.level!,
+        user_nickname: user?.nickname!,
+        user_rank_name: user?.rank?.name!,
+        user_id: user?.id!,
+      })
+    );
+
+    return apiPostList ?? [];
+  }
+
+  static async getCommentList(
+    postId: string
+  ): Promise<CommentType[]> {
+    const supabase = createClient();
+
+    const { data: dbCommentList, error } = await supabase
+      .from('comments')
+      .select(
+        `
+      id, created_at, content, 
+      user: users (
+        id, nickname, profile_img,
+        rank: ranks (
+          name
+        )
+      )
+    `
+      )
+      .eq('post_id', postId);
+
+    const appCommentList = dbCommentList?.map<CommentType>(
+      ({ content, created_at, id, user }) => ({
+        content,
+        created_at: new Date(created_at),
+        id,
+        user_id: user?.id!,
+        user_nickname: user?.nickname!,
+        user_rank_name: user?.rank?.name!,
+        user_profile_img: user?.profile_img!,
+      })
+    );
+
+    return appCommentList ?? [];
   }
 }
