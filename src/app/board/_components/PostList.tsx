@@ -3,7 +3,7 @@
 import { PostItemType } from '@/types/common';
 import PostItem from './PostItem';
 
-import { usePostListByBoardIdQuery } from '@/hooks/usePostTanstack';
+import { useBoardPostListQuery } from '@/hooks/usePostTanstack';
 
 interface Props {
   postList: PostItemType[];
@@ -11,7 +11,7 @@ interface Props {
 }
 
 function PostList({ postList: postListInitialData, boardId }: Props) {
-  const { data: postList } = usePostListByBoardIdQuery(
+  const { data: postList } = useBoardPostListQuery(
     boardId,
     postListInitialData
   );
