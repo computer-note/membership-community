@@ -1,7 +1,6 @@
-import Link from 'next/link';
-import ImageWithFallback from '../ImageWithFallback';
 import { extractYYYYMMDD, trucateWithEllipses } from '@/utils/format';
-import React from 'react';
+import ImageWithFallback from '../ImageWithFallback';
+import Link from 'next/link';
 
 interface Props {
   profile_img: string;
@@ -46,7 +45,7 @@ function Profile({
         </NicknameContainer>
 
         <span className='text-[#666666]'>
-          {extractYYYYMMDD(created_at)} 가입
+          {extractYYYYMMDD(created_at)} {isUser ? '가입' : '개설'}
         </span>
       </div>
     </div>

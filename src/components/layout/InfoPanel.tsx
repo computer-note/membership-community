@@ -4,14 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/providers/AuthContextProvider';
 
-import Link from 'next/link';
-import Image from 'next/image';
-import ImageWithFallback from '../ImageWithFallback';
-
-import { extractYYYYMMDD, trucateWithEllipses } from '@/utils/format';
 import Profile from './Profile';
 
-type TabListType = 'Cafe' | 'User';
+type TabListType = 'Cafe' | 'MyProfile';
 
 function InfoPanel() {
   const router = useRouter();
@@ -24,7 +19,7 @@ function InfoPanel() {
 
   function handleMyProfileTabClick() {
     if (user) {
-      setSelectedTab('User');
+      setSelectedTab('MyProfile');
     } else {
       alert('로그인을 해주세요!');
       router.push('/login');
@@ -58,7 +53,7 @@ function InfoPanel() {
         />
       ) : null}
 
-      {selectedTab === 'User' && user ? (
+      {selectedTab === 'MyProfile' && user ? (
         <Profile
           created_at={user.created_at}
           nickname={user.nickname}
