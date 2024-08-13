@@ -1,16 +1,30 @@
 'use client';
 
+import { usePostListDeleteMutation } from '@/hooks/usePostTanstack';
 import Link from 'next/link';
 
-function MyPageBottomUIs() {
+interface Props {
+  userId: string;
+}
+
+function MyPageBottomUIs({ userId }: Props) {
+  const postListDeleteMutation = usePostListDeleteMutation(userId);
+
   function handleDeleteButtonClick() {
     const checkboxElems = getCheckboxElements();
     const postIdsToDelete = checkboxElems
       .filter(checkboxElem => checkboxElem.checked)
       .map(checkboxElem => checkboxElem.dataset.postId!);
 
-    if (postIdsToDelete.length) {
+    if (!postIdsToDelete.length) {
+      alert('삭제하실 포스트를 선택해주세요.');
       return;
+    }
+
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      postListDeleteMutation.mutate(postIdsToDelete);
+
+      alert('선택하신 포스트가 삭제되었습니다.');
     }
   }
 
