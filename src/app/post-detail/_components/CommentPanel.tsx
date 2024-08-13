@@ -1,4 +1,5 @@
 import { SupabaseServerApi } from '@/api/supabase.server.api';
+
 import CommentList from './CommentList';
 import CommentWrite from './CommentWrite';
 
@@ -11,7 +12,7 @@ async function CommentPanel({ postId }: Props) {
 
   return (
     <section className='mt-[40px]'>
-      <CommentList commentList={commentList} />
+      <CommentList commentList={commentList} postId={postId} />
       <CommentWrite postId={postId} />
     </section>
   );
