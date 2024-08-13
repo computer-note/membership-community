@@ -1,9 +1,10 @@
 'use client';
 
-import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 import { useAuthContext } from '@/providers/AuthContextProvider';
 import { CommentCreateFormType } from '@/types/common';
-import { ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
+
+import { useCommentCreateMutation } from '@/hooks/useCommentTanstack';
 
 interface Props {
   postId: string;
@@ -12,6 +13,8 @@ interface Props {
 function CommentWrite({ postId }: Props) {
   const [comment, setComment] = useState<string>('');
   const user = useAuthContext();
+
+  const createCommentMutation = useCommentCreateMutation(postId);
 
   async function handleCommentCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +32,7 @@ function CommentWrite({ postId }: Props) {
       user_id: user!.id,
     };
 
-    await SupabaseBrowserApi.createComment(commentForm);
+    createCommentMutation.mutate(commentForm);
 
     alert('댓글등록');
 
