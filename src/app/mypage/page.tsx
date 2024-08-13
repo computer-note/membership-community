@@ -12,7 +12,7 @@ async function page() {
   return (
     <section className='w-[860px] pr-[10px]'>
       <PostList postList={postList} userId={user?.id!} />
-      <MyPageBottomUIs />
+      <MyPageBottomUIs userId={user?.id!} />
       <div className='mb-[16px]'></div>
     </section>
   );
