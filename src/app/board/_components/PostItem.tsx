@@ -8,14 +8,10 @@ interface Props {
 
 function PostItem({ postItem }: Props) {
   const {
-    board_name,
-    board_rank_level,
     created_at,
     id: post_id,
     title,
-    user_id,
     user_nickname,
-    user_rank_name,
     visited_count,
   } = postItem;
 
