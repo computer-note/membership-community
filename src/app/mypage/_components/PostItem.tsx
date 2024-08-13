@@ -1,12 +1,13 @@
 import { PostItemType } from '@/types/common';
 import { extractYYYYMMDD } from '@/utils/format';
+import Link from 'next/link';
 
 interface Props {
   postItem: PostItemType;
 }
 
 function PostItem({ postItem }: Props) {
-  const { created_at, title, visited_count } = postItem;
+  const { created_at, title, visited_count, id: postId } = postItem;
 
   return (
     <>
@@ -14,7 +15,12 @@ function PostItem({ postItem }: Props) {
         <span className='w-[30px] inline-block'>
           <input type='checkbox' />
         </span>
-        <span>{title}</span>
+        <Link
+          href={`/post-detail/${postId}`}
+          className='hover:underline'
+        >
+          {title}
+        </Link>
       </td>
       <td className='text-center'>{extractYYYYMMDD(created_at)}</td>
       <td className='text-center'>{visited_count}</td>
