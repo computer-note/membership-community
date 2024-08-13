@@ -5,7 +5,7 @@ import { PostItemType } from '@/types/common';
 
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 
-export function usePostListByUserIdQuery(
+export function useUserPostListQuery(
   userId: string,
   initialData: PostItemType[]
 ) {
@@ -16,7 +16,7 @@ export function usePostListByUserIdQuery(
   });
 }
 
-export function usePostListByBoardIdQuery(
+export function useBoardPostListQuery(
   boardId: string,
   initialData: PostItemType[]
 ) {
