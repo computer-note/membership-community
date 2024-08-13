@@ -13,7 +13,7 @@ function PostItem({ postItem }: Props) {
     <>
       <td className='pl-[4px]'>
         <span className='w-[30px] inline-block'>
-          <input type='checkbox' />
+          <input type='checkbox' data-post-id={postId} />
         </span>
         <Link
           href={`/post-detail/${postId}`}
