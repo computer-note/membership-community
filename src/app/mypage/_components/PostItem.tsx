@@ -6,17 +6,7 @@ interface Props {
 }
 
 function PostItem({ postItem }: Props) {
-  const {
-    board_name,
-    board_rank_level,
-    created_at,
-    id,
-    title,
-    user_id,
-    user_nickname,
-    user_rank_name,
-    visited_count,
-  } = postItem;
+  const { created_at, title, visited_count } = postItem;
 
   return (
     <>
