@@ -9,9 +9,9 @@ import Image from 'next/image';
 import ImageWithFallback from '../ImageWithFallback';
 
 import { extractYYYYMMDD, trucateWithEllipses } from '@/utils/format';
+import Profile from './Profile';
 
 type TabListType = 'Cafe' | 'User';
-const NICKNAME_TRUCNCATE_LIMIT = 10;
 
 function InfoPanel() {
   const router = useRouter();
@@ -49,49 +49,23 @@ function InfoPanel() {
       </div>
 
       {selectedTab === 'Cafe' ? (
-        <div className='flex gap-[8px] pt-[15px] pb-[12px]'>
-          <Image
-            src={'/cafeprofile_58X58_3x.png'}
-            width={58}
-            height={58}
-            alt='cafe-profile'
-            className='h-[inherit]'
-          />
-          <div className='flex flex-col justify-center text-[13px]'>
-            <div>
-              <span className='font-[700]'>중고나라</span>
-              <span>매니저</span>
-            </div>
-            <span>2003.12.10 개설</span>
-          </div>
-        </div>
+        <Profile
+          created_at={new Date('2003-12-10')}
+          nickname={'중고나라'}
+          profile_img={'/cafeprofile_58X58_3x.png'}
+          rankname={'매니저'}
+          isUser={false}
+        />
       ) : null}
 
-      {selectedTab === 'User' ? (
-        <div className='flex gap-[8px] pt-[15px] pb-[12px]'>
-          <ImageWithFallback
-            src={user?.profile_img!}
-            width={58}
-            height={58}
-            alt='default_profile'
-            className='h-[inherit]'
-          />
-
-          <div className='flex flex-col justify-center text-[13px] gap-[6px]'>
-            <Link href={'/mypage'} className='hover:underline'>
-              <span className='font-[700]'>
-                {trucateWithEllipses(
-                  user?.nickname! + user?.rank_name!,
-                  NICKNAME_TRUCNCATE_LIMIT
-                )}
-              </span>
-            </Link>
-
-            <span className='text-[#666666]'>
-              {extractYYYYMMDD(user?.created_at)} 가입
-            </span>
-          </div>
-        </div>
+      {selectedTab === 'User' && user ? (
+        <Profile
+          created_at={user.created_at}
+          nickname={user.nickname}
+          profile_img={user.profile_img!}
+          rankname={user.rank_name}
+          isUser={true}
+        />
       ) : null}
     </div>
   );
