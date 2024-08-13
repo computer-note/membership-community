@@ -225,4 +225,10 @@ export class SupabaseBrowserApi {
 
     return appCommentList ?? [];
   }
+
+  static async deletePostList(postIdList: string[]) {
+    const supabase = createClient();
+
+    await supabase.from('posts').delete().in('id', postIdList);
+  }
 }
