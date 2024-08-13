@@ -11,7 +11,7 @@ async function page() {
 
   return (
     <section className='w-[860px] pr-[10px]'>
-      <PostList postList={postList} />
+      <PostList postList={postList} userId={user?.id!} />
       <PostButtons />
       <div className='mb-[16px]'></div>
     </section>
