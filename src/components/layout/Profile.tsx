@@ -19,8 +19,6 @@ function Profile({
   rankname,
   isUser,
 }: Props) {
-  const NicknameContainer = isUser ? Link : 'div';
-
   return (
     <div className='flex gap-[8px] pt-[15px] pb-[12px]'>
       <ImageWithFallback
@@ -32,17 +30,27 @@ function Profile({
       />
 
       <div className='flex flex-col justify-center text-[13px] gap-[6px]'>
-        <NicknameContainer
-          href={'/mypage'}
-          className='hover:underline'
-        >
-          <span className='font-[700]'>
-            {trucateWithEllipses(
-              nickname + rankname,
-              NICKNAME_TRUCNCATE_LIMIT
-            )}
-          </span>
-        </NicknameContainer>
+        {isUser === true ? (
+          <Link href={'/mypage'} className='hover:underline'>
+            <span className='font-[700]'>
+              {trucateWithEllipses(
+                nickname + rankname,
+                NICKNAME_TRUCNCATE_LIMIT
+              )}
+            </span>
+          </Link>
+        ) : null}
+
+        {isUser === false ? (
+          <div className='hover:underline'>
+            <span className='font-[700]'>
+              {trucateWithEllipses(
+                nickname + rankname,
+                NICKNAME_TRUCNCATE_LIMIT
+              )}
+            </span>
+          </div>
+        ) : null}
 
         <span className='text-[#666666]'>
           {extractYYYYMMDD(created_at)} {isUser ? '가입' : '개설'}
