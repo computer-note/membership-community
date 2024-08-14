@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/client';
 import {
+  BoardType,
   CommentCreateFormType,
   CommentModifyFormType,
   CommentType,
@@ -230,5 +231,25 @@ export class SupabaseBrowserApi {
     const supabase = createClient();
 
     await supabase.from('posts').delete().in('id', postIdList);
+  }
+
+  static async getBoardList(): Promise<BoardType[]> {
+    const supabase = createClient();
+    const { data: dbBoardList, error } = await supabase.from('boards')
+      .select(`
+        name, id,
+        rank: ranks (name, level)
+      `);
+
+    const apiBoardList = dbBoardList?.map<BoardType>(
+      ({ id, name, rank }) => ({
+        id,
+        name,
+        rank_level: rank?.level!,
+        rank_name: rank?.name!,
+      })
+    );
+
+    return apiBoardList ?? [];
   }
 }
