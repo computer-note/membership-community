@@ -22,7 +22,7 @@ async function PostWritePage({
   return (
     <PostWriteForm
       postDetail={postDetail}
-      board_id={board_id ? +board_id : 1}
+      board_id={board_id ? +board_id : ''}
       user_id={user?.id!}
       user_level={user?.rank_level!}
     />
