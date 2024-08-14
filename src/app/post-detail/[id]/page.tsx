@@ -12,7 +12,7 @@ async function PostDetailPage({ params }: Props) {
 
   return (
     <div className='flex flex-col border border-[#ebecef] rounded-[6px] p-[29px] mr-[5px]'>
-      <PostDetail postDetail={postDetail} />
+      <PostDetail postDetail={postDetail!} />
       <CommentPanel postId={postId} />
     </div>
   );

@@ -21,7 +21,7 @@ export function useUserPostListQuery(
 }
 
 export function useBoardPostListQuery(
-  boardId: string,
+  boardId: number,
   initialData: PostItemType[]
 ) {
   return useQuery({
