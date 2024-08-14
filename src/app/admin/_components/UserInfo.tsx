@@ -25,8 +25,8 @@ function UserInfo({ userInfo }: Props) {
       <span>등급 {rank_name}</span>
       <span>카페방문수 {visit_count}</span>
       <span>정지여부: {is_banned ? 'YES' : 'NO'}</span>
-      <span>가입일자 {created_at.toDateString()}</span>
-      <span>마지막방문일 {last_visited.toDateString()}</span>
+      <span>가입일자 {created_at?.toDateString()}</span>
+      <span>마지막방문일 {last_visited?.toDateString()}</span>
     </div>
   );
 }
