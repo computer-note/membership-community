@@ -1,6 +1,5 @@
 import 'react-quill/dist/quill.snow.css';
 
-import Link from 'next/link';
 import ImageWithFallback from '@/components/ImageWithFallback';
 
 import {
@@ -19,11 +18,9 @@ function PostDetail({ postDetail }: Props) {
     board_name,
     content,
     created_at,
-    id,
     item_img,
     price,
     title,
-    user_id,
     user_nickname,
     user_rank_name,
     visited_count,
