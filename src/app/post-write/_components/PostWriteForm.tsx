@@ -110,7 +110,7 @@ function PostWriteForm({
         <TextInput
           placeholder='이미지 주소를 입력하세요'
           htmlName='item_img'
-          defaultValue={postDetail?.price}
+          defaultValue={postDetail?.item_img}
         />
         <div className=''>
           <Editor setEditorContent={setEditorContent} />
