@@ -37,6 +37,7 @@ export type PostDetailType = {
   user_id: string;
   user_profile_img: string;
   board_name: string;
+  board_id: number;
 };
 
 export type PostFormType = {
