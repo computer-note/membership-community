@@ -19,10 +19,17 @@ async function PostWritePage({
     postDetail = await SupabaseServerApi.getPostDetail(post_id);
   }
 
+  let defaultSelectedBoardId: string | '' = '';
+  if (board_id) {
+    defaultSelectedBoardId = board_id;
+  } else if (postDetail) {
+    defaultSelectedBoardId = postDetail.board_name;
+  }
+
   return (
     <PostWriteForm
       postDetail={postDetail}
-      board_id={board_id ? +board_id : ''}
+      defaultSelectedBoardId={defaultSelectedBoardId}
       user_id={user?.id!}
       user_level={user?.rank_level!}
     />
