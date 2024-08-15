@@ -1,19 +1,39 @@
 import { SupabaseServerApi } from '@/api/supabase.server.api';
 import PostWriteForm from './_components/PostWriteForm';
+import { type PostDetailType } from '@/types/common';
 
 interface Props {
-  params: { board_id: string };
+  searchParams: {
+    board_id?: string;
+    post_id?: string;
+  };
 }
 
-//Todo. 로그인하지 않은 유저가 하드내비게이션으로 해당 페이지에 접근했을 때 리다이렉트하는 로직
-async function PostWritePage({ params: { board_id } }: Props) {
+async function PostWritePage({
+  searchParams: { board_id, post_id },
+}: Props) {
   const user = await SupabaseServerApi.getUser();
 
-  if (!user) {
-    return <p>로그인한 사용자만 게시글을 작성할 수 있습니다.</p>;
+  let postDetail: PostDetailType | null = null;
+  if (post_id) {
+    postDetail = await SupabaseServerApi.getPostDetail(post_id);
   }
 
-  return <PostWriteForm board_id={+board_id} user_id={user.id} />;
+  let defaultSelectedBoardId: string | '' = '';
+  if (board_id) {
+    defaultSelectedBoardId = board_id;
+  } else if (postDetail) {
+    defaultSelectedBoardId = postDetail.board_name;
+  }
+
+  return (
+    <PostWriteForm
+      postDetail={postDetail}
+      defaultSelectedBoardId={defaultSelectedBoardId}
+      user_id={user?.id!}
+      user_level={user?.rank_level!}
+    />
+  );
 }
 
 export default PostWritePage;

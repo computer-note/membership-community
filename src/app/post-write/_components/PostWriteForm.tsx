@@ -1,19 +1,40 @@
 'use client';
 
-import { FormEvent } from 'react';
-import { PostFormType } from '@/types/common';
-import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
-import { useRouter } from 'next/navigation';
 import TextInput from './TextInput';
+import BoardSelect from './BoardSelect';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
+
+import {
+  type PostDetailType,
+  type PostFormType,
+} from '@/types/common';
+import { type FormEvent } from 'react';
+
+import dynamic from 'next/dynamic';
+const Editor = dynamic(() => import('./Editor'), {
+  ssr: false,
+});
 
 interface Props {
-  board_id: number;
+  postDetail: PostDetailType | null;
+  defaultSelectedBoardId: string | '';
   user_id: string;
+  user_level: number;
 }
 
 //Todo. 게시글 작성 중에 다른 페이지로 이동하려고 할 시 알림메시지 표시
-function PostWriteForm({ board_id, user_id }: Props) {
+function PostWriteForm({
+  user_id,
+  user_level,
+  postDetail,
+  defaultSelectedBoardId,
+}: Props) {
   const router = useRouter();
+  const [editorContent, setEditorContent] = useState<string>('');
 
   async function handleWritePost(e: FormEvent) {
     e.preventDefault();
@@ -24,7 +45,8 @@ function PostWriteForm({ board_id, user_id }: Props) {
     const title = formData.get('title') as string;
     const item_img = formData.get('item_img') as string;
     const price = formData.get('price') as string;
-    const content = formData.get('content') as string;
+    const board_id = formData.get('board') as string;
+    const content = editorContent;
 
     //Todo. 유효성 검사 로직 추가
     if (
@@ -38,7 +60,7 @@ function PostWriteForm({ board_id, user_id }: Props) {
     }
 
     const postFormData: PostFormType = {
-      board_id,
+      board_id: +board_id,
       user_id,
       content,
       item_img,
@@ -68,17 +90,30 @@ function PostWriteForm({ board_id, user_id }: Props) {
       </div>
 
       <div className='flex flex-col gap-[12px] border border-[#eee] rounded-[14px] px-[20px] py-[28px] mr-[8px]'>
-        <TextInput placeholder='상품명(제목)' name='title' />
-        <TextInput placeholder='가격을 입력하세요' name='price' />
+        <BoardSelect
+          className='h-[48px] rounded-[12px]'
+          htmlName='board'
+          user_level={user_level}
+          defaultSelectedBoardId={defaultSelectedBoardId}
+        />
 
-        <div>
-          <label htmlFor='item_img'>이미지</label>
-          <input name='item_img' />
-        </div>
-
-        <div>
-          <label htmlFor='content'>내용</label>
-          <input name='content' />
+        <TextInput
+          placeholder='상품명(제목)'
+          htmlName='title'
+          defaultValue={postDetail?.title}
+        />
+        <TextInput
+          placeholder='가격을 입력하세요'
+          htmlName='price'
+          defaultValue={postDetail?.price}
+        />
+        <TextInput
+          placeholder='이미지 주소를 입력하세요'
+          htmlName='item_img'
+          defaultValue={postDetail?.price}
+        />
+        <div className=''>
+          <Editor setEditorContent={setEditorContent} />
         </div>
       </div>
     </form>

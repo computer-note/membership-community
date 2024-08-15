@@ -1,14 +1,23 @@
-import BoardList from '../BoardList';
-import InfoPanel from '../InfoPanel';
+import InfoPanel from './InfoPanel';
+import BoardList from './BoardList';
 import AccountDelete from './AccountDelete';
+import CacheBoardList from './CacheBoardList';
 
-function Sidebar() {
+import { SupabaseServerApi } from '@/api/supabase.server.api';
+
+async function Sidebar() {
+  const boardList = await SupabaseServerApi.getBoardList();
+
   return (
-    <aside className='w-[200px]'>
-      <InfoPanel />
-      <BoardList />
-      <AccountDelete />
-    </aside>
+    <>
+      <aside className='w-[200px]'>
+        <InfoPanel />
+        <BoardList boardList={boardList} />
+        <AccountDelete />
+      </aside>
+
+      <CacheBoardList boardList={boardList} />
+    </>
   );
 }
 

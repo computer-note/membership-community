@@ -1,9 +1,11 @@
-import { SupabaseServerApi } from '@/api/supabase.server.api';
+import { BoardType } from '@/types/common';
 import Link from 'next/link';
 
-async function BoardList() {
-  const boardList = await SupabaseServerApi.getBoardList();
+interface Props {
+  boardList: BoardType[];
+}
 
+function BoardList({ boardList }: Props) {
   return (
     <ul className='px-[10px] mt-6 text-[13px] leading-[24px] '>
       {boardList.map(board => (

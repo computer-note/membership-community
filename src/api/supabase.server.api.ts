@@ -10,7 +10,7 @@ import { type PaginationInfoType } from '@/types/utils';
 import { createClient } from '@/supabase/server';
 
 export class SupabaseServerApi {
-  static async getPostList(
+  static async getPostListByBoardId(
     boardId: number,
     paginationInfo?: PaginationInfoType
   ): Promise<PostItemType[]> {

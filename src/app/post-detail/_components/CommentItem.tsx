@@ -1,92 +1,128 @@
 'use client';
 
-import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 import ImageWithFallback from '@/components/ImageWithFallback';
-import { type CommentType } from '@/types/common';
+
+import { useEffect, useRef, useState } from 'react';
+import useCommentHandlers from '@/hooks/useCommentHandler';
+
 import { extractHHMM, extractYYYYMMDD } from '@/utils/format';
-import {
-  type FormEvent,
-  type KeyboardEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+
+import { type CommentType } from '@/types/common';
+import { type FormEvent, type KeyboardEvent } from 'react';
 
 interface Props {
   commentItem: CommentType;
   isOwnedByLoginUser: boolean;
+  postId: string;
 }
 
-function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
+const COMMENT_EDIT_MODE_HEIGHT = '300px';
+const COMMENT_MAX_LENGTH = 300;
+
+function CommentItem({
+  commentItem,
+  isOwnedByLoginUser,
+  postId,
+}: Props) {
   const {
+    id: comment_id,
     content,
     created_at,
-    id: comment_id,
-    user_id,
     user_nickname,
     user_rank_name,
     user_profile_img,
   } = commentItem;
 
-  const commentTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [isInEditMode, setIsInEditMode] = useState<boolean>(false);
+  const commentTextAreaRef = useRef<null | HTMLTextAreaElement>(null);
+  const [shouldShowEditModeUIs, setShouldShowEditModeUIs] =
+    useState<boolean>(false);
+
+  const { handleModifyComment, handleDeleteComment } =
+    useCommentHandlers(postId, comment_id);
+
+  const [currentLength, setCurrentLength] = useState(0);
 
   useEffect(() => {
     const commentTextArea = commentTextAreaRef.current!;
 
-    commentTextArea.style.height =
-      commentTextArea.scrollHeight + 'px';
+    fitSizeToContent(commentTextArea);
+    setCurrentLength(commentTextArea.value.length);
   }, [commentTextAreaRef.current]);
 
-  async function handleCommentDelete() {
-    await SupabaseBrowserApi.deleteComment(comment_id);
-    //Todo. 에러처리 로직추가
-
-    alert('댓글이 삭제되었습니다.');
-  }
-
-  function handleEnterEditMode() {
+  function handleEnterEditModeButtonClick() {
     const commentTextArea = commentTextAreaRef.current!;
 
-    setIsInEditMode(true);
-    commentTextArea.readOnly = false;
-    commentTextArea.focus();
+    enterEditMode(commentTextArea);
   }
 
-  async function handleEditKeydown(e: KeyboardEvent) {
+  function handleExitEditModeButtonClick() {
     const commentTextArea = commentTextAreaRef.current!;
 
-    commentTextArea.style.height =
-      commentTextArea.scrollHeight + 'px';
+    exitEditMode(commentTextArea);
+  }
+
+  async function handleTextAreaKeydown(e: KeyboardEvent) {
+    const commentTextArea = commentTextAreaRef.current!;
+
+    setCurrentLength(commentTextArea.value.length);
 
     if (e.code === 'Escape') {
-      commentTextArea.value = content; //원래 있던 내용으로 복구
+      commentTextArea.value = content; //원래 내용으로 복구
 
-      commentTextArea.readOnly = true;
-      setIsInEditMode(false);
+      exitEditMode(commentTextArea);
     }
 
     if (e.code === 'Enter') {
-      e.target.form.requestSubmit();
+      commentTextArea.form?.requestSubmit();
 
       e.preventDefault();
     }
+
+    if (
+      currentLength >= COMMENT_MAX_LENGTH &&
+      e.code !== 'Backspace' &&
+      e.code !== 'NumpadDecimal'
+    ) {
+      e.preventDefault();
+
+      return;
+    }
   }
 
-  async function handleCommentSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const commentTextArea = commentTextAreaRef.current!;
 
-    await SupabaseBrowserApi.modifyComment({
-      comment_id,
-      content: commentTextArea.value,
-    });
+    handleModifyComment(commentTextArea.value);
 
     alert('댓글이 수정되었습니다.');
 
-    setIsInEditMode(false);
-    commentTextArea.readOnly = true;
+    exitEditMode(commentTextArea);
+  }
+
+  async function handleDeleteButtonClick() {
+    handleDeleteComment();
+
+    alert('댓글이 삭제되었습니다.');
+  }
+
+  function enterEditMode(textarea: HTMLTextAreaElement) {
+    setShouldShowEditModeUIs(true);
+    textarea.style.height = COMMENT_EDIT_MODE_HEIGHT;
+    textarea.readOnly = false;
+    textarea.focus();
+  }
+
+  function exitEditMode(textarea: HTMLTextAreaElement) {
+    setShouldShowEditModeUIs(false);
+    fitSizeToContent(textarea);
+    textarea.readOnly = true;
+  }
+
+  function fitSizeToContent(textarea: HTMLTextAreaElement) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 
   return (
@@ -111,13 +147,13 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
           {isOwnedByLoginUser ? (
             <div className='flex gap-[6px] text-[13px] '>
               <button
-                onClick={handleEnterEditMode}
+                onClick={handleEnterEditModeButtonClick}
                 className='hover:underline'
               >
                 수정
               </button>
               <button
-                onClick={handleCommentDelete}
+                onClick={handleDeleteButtonClick}
                 className='hover:underline'
               >
                 삭제
@@ -127,13 +163,29 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
         </div>
 
         <div>
-          <form onSubmit={handleCommentSubmit}>
+          <form onSubmit={handleSubmit}>
             <textarea
+              onKeyDown={handleTextAreaKeydown}
               ref={commentTextAreaRef}
-              className='w-[100%] text-[15px] leading-[22px] break-words overflow-y resize-none max-h-[500px] min-h-[19px]'
               defaultValue={content}
-              onKeyDown={handleEditKeydown}
+              readOnly
+              className='w-[100%] text-[15px] leading-[22px] break-words overflow-y resize-none max-h-[500px] min-h-[21px]'
             />
+
+            {shouldShowEditModeUIs && (
+              <div>
+                <span
+                  className={`${
+                    currentLength >= COMMENT_MAX_LENGTH &&
+                    'text-red-400'
+                  }`}
+                >
+                  {currentLength}
+                </span>
+                {' / '}
+                <span>{COMMENT_MAX_LENGTH}</span>
+              </div>
+            )}
 
             <div className='flex justify-between text-[12px] '>
               <div className='text-[#979797] '>
@@ -142,9 +194,14 @@ function CommentItem({ commentItem, isOwnedByLoginUser }: Props) {
                 </span>
                 <span>{extractHHMM(created_at)}</span>
               </div>
-              {isInEditMode ? (
+              {shouldShowEditModeUIs ? (
                 <div>
-                  <button className='mr-[8px]'>취소</button>
+                  <button
+                    onClick={handleExitEditModeButtonClick}
+                    className='mr-[8px]'
+                  >
+                    취소
+                  </button>
                   <button>등록</button>
                 </div>
               ) : null}

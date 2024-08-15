@@ -18,3 +18,14 @@ export function extractHHMM(date: Date): string {
 export function convertWonFormat(number: number | string) {
   return new Intl.NumberFormat('ko-KR').format(+number);
 }
+
+export function trucateWithEllipses(
+  str: string,
+  limit: number
+): string {
+  if (str.length < limit) {
+    return str;
+  } else {
+    return str.slice(0, limit) + '...';
+  }
+}

@@ -1,17 +1,29 @@
-import { CommentType } from '@/types/common';
-import { SupabaseServerApi } from '@/api/supabase.server.api';
+'use client';
+
 import CommentItem from './CommentItem';
+import { useAuthContext } from '@/providers/AuthContextProvider';
+import { useCommentListQuery } from '@/hooks/useCommentTanstack';
+import { CommentType } from '@/types/common';
 
 interface Props {
+  postId: string;
   commentList: CommentType[];
 }
 
-async function CommentList({ commentList }: Props) {
-  const user = await SupabaseServerApi.getUser();
+function CommentList({
+  postId,
+  commentList: commentListInitialData,
+}: Props) {
+  const user = useAuthContext();
+
+  const { data: commentList } = useCommentListQuery(
+    postId,
+    commentListInitialData
+  );
 
   return (
     <ul className='flex flex-col items-center gap-5 p-2'>
-      {commentList.map(commentItem => {
+      {commentList?.map(commentItem => {
         const isOwnedByLoginUser =
           user && user.id === commentItem.user_id ? true : false;
 
@@ -20,6 +32,7 @@ async function CommentList({ commentList }: Props) {
             key={commentItem.id}
             commentItem={commentItem}
             isOwnedByLoginUser={isOwnedByLoginUser}
+            postId={postId}
           />
         );
       })}

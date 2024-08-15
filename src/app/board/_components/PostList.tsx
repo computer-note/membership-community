@@ -1,10 +1,21 @@
+'use client';
+
 import { PostItemType } from '@/types/common';
 import PostItem from './PostItem';
+
+import { useBoardPostListQuery } from '@/hooks/usePostTanstack';
+
 interface Props {
   postList: PostItemType[];
+  boardId: number;
 }
 
-function PostList({ postList }: Props) {
+function PostList({ postList: postListInitialData, boardId }: Props) {
+  const { data: postList } = useBoardPostListQuery(
+    boardId,
+    postListInitialData
+  );
+
   return (
     <table>
       <thead className='border-t border-black'>

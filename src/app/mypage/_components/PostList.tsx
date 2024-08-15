@@ -1,11 +1,21 @@
-import { PostItemType } from '@/types/common';
+'use client';
+
 import PostItem from './PostItem';
 
+import { PostItemType } from '@/types/common';
+import { useUserPostListQuery } from '@/hooks/usePostTanstack';
+
 interface Props {
+  userId: string;
   postList: PostItemType[];
 }
 
-function PostList({ postList }: Props) {
+function PostList({ userId, postList: postListInitialData }: Props) {
+  const { data: postList } = useUserPostListQuery(
+    userId,
+    postListInitialData
+  );
+
   return (
     <table className='border-t border-[#666]  text-[13px] '>
       <thead className='h-[45px] border-b border-[#f2f2f2]'>
@@ -16,7 +26,7 @@ function PostList({ postList }: Props) {
         </tr>
       </thead>
       <tbody>
-        {postList.map(postItem => (
+        {postList?.map(postItem => (
           <tr
             key={postItem.id}
             className='h-[38px] border-b border-[#f2f2f2]'
