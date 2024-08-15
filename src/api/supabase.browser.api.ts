@@ -233,6 +233,12 @@ export class SupabaseBrowserApi {
     await supabase.from('posts').delete().in('id', postIdList);
   }
 
+  static async deletePost(postId: string) {
+    const supabase = createClient();
+
+    await supabase.from('posts').delete().eq('id', postId);
+  }
+
   static async getBoardList(): Promise<BoardType[]> {
     const supabase = createClient();
     const { data: dbBoardList, error } = await supabase.from('boards')
