@@ -15,15 +15,17 @@ async function PostWritePage({
   const user = await SupabaseServerApi.getUser();
 
   let postDetail: PostDetailType | null = null;
+  let defaultSelectedBoardId: string | '' = '';
+
+  //게시물 수정을 통해 post-write 페이지에 접근한 경우
   if (post_id) {
     postDetail = await SupabaseServerApi.getPostDetail(post_id);
+    defaultSelectedBoardId = postDetail?.board_id;
   }
 
-  let defaultSelectedBoardId: string | '' = '';
+  //특정 게시판페이지에서 post-write 페이지에 접근한 경우
   if (board_id) {
     defaultSelectedBoardId = board_id;
-  } else if (postDetail) {
-    defaultSelectedBoardId = postDetail.board_name;
   }
 
   return (
