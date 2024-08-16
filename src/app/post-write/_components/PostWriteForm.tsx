@@ -8,17 +8,9 @@ const Editor = dynamic(() => import('./Editor'), {
 });
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  usePostCreateMutation,
-  usePostModifyMutation,
-} from '@/hooks/usePostTanstack';
+import { useHandleWritePost } from '../_hooks/useHandleWritePost';
 
-import {
-  type PostDetailType,
-  type PostFormType,
-} from '@/types/common';
-import { type FormEvent } from 'react';
+import { type PostDetailType } from '@/types/common';
 import { type PostMethodType } from './type';
 
 interface Props {
@@ -29,7 +21,6 @@ interface Props {
   postMethod: PostMethodType;
 }
 
-//Todo. 게시글 작성 중에 다른 페이지로 이동하려고 할 시 알림메시지 표시
 function PostWriteForm({
   user_id,
   user_level,
@@ -37,59 +28,16 @@ function PostWriteForm({
   postMethod,
   defaultSelectedBoardId,
 }: Props) {
-  const router = useRouter();
   const [editorContent, setEditorContent] = useState<string>(
     postDetail?.content ?? ''
   );
 
-  const postCreateMutation = usePostCreateMutation();
-  const postModifyMutation = usePostModifyMutation();
-
-  async function handleWritePost(e: FormEvent) {
-    e.preventDefault();
-
-    const formElem = e.target as HTMLFormElement;
-    const formData = new FormData(formElem);
-
-    const title = formData.get('title') as string;
-    const item_img = formData.get('item_img') as string;
-    const price = formData.get('price') as string;
-    const board_id = formData.get('board_id') as string;
-
-    const content = editorContent;
-
-    //Todo. 유효성 검사 로직 추가
-    if (
-      !title.length ||
-      !item_img.length ||
-      !price.length ||
-      !content.length
-    ) {
-      alert('필드를 모두 입력해주세요.');
-      return;
-    }
-
-    const postFormData: PostFormType = {
-      board_id: +board_id,
-      user_id,
-      content,
-      item_img,
-      price: Number.isNaN(+price) ? '9999' : price,
-      title,
-      post_id: postDetail?.id,
-    };
-
-    if (postMethod === 'create') {
-      postCreateMutation.mutate(postFormData);
-      alert('게시글 작성 완료');
-      router.push(`/board/${board_id}`);
-    } else if (postMethod === 'modify') {
-      postModifyMutation.mutate(postFormData);
-      alert('게시글 수정 완료');
-      //Todo. 해당 포스트의 게시글 상세 페이지의 캐시 무효화
-      router.push(`/post-detail/${postDetail?.id}`);
-    }
-  }
+  const { handleWritePost } = useHandleWritePost({
+    editorContent,
+    postDetail,
+    postMethod,
+    user_id,
+  });
 
   return (
     <form onSubmit={handleWritePost}>
