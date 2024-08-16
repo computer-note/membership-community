@@ -2,101 +2,61 @@
 
 import TextInput from './TextInput';
 import BoardSelect from './BoardSelect';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
-
-import {
-  type PostDetailType,
-  type PostFormType,
-} from '@/types/common';
-import { type FormEvent } from 'react';
-
 import dynamic from 'next/dynamic';
 const Editor = dynamic(() => import('./Editor'), {
   ssr: false,
 });
+
+import { useState } from 'react';
+import { useHandleWritePost } from '../_hooks/useHandleWritePost';
+
+import { type PostDetailType } from '@/types/common';
+import { type PostMethodType } from './type';
 
 interface Props {
   postDetail: PostDetailType | null;
   defaultSelectedBoardId: string | '';
   user_id: string;
   user_level: number;
+  postMethod: PostMethodType;
 }
 
-//Todo. 게시글 작성 중에 다른 페이지로 이동하려고 할 시 알림메시지 표시
 function PostWriteForm({
   user_id,
   user_level,
   postDetail,
+  postMethod,
   defaultSelectedBoardId,
 }: Props) {
-  const router = useRouter();
-  const [editorContent, setEditorContent] = useState<string>('');
+  const [editorContent, setEditorContent] = useState<string>(
+    postDetail?.content ?? ''
+  );
 
-  async function handleWritePost(e: FormEvent) {
-    e.preventDefault();
-
-    const formElem = e.target as HTMLFormElement;
-    const formData = new FormData(formElem);
-
-    const title = formData.get('title') as string;
-    const item_img = formData.get('item_img') as string;
-    const price = formData.get('price') as string;
-    const board_id = formData.get('board') as string;
-    const content = editorContent;
-
-    //Todo. 유효성 검사 로직 추가
-    if (
-      !title.length ||
-      !item_img.length ||
-      !price.length ||
-      !content.length
-    ) {
-      alert('필드를 모두 입력해주세요.');
-      return;
-    }
-
-    const postFormData: PostFormType = {
-      board_id: +board_id,
-      user_id,
-      content,
-      item_img,
-      price: Number.isNaN(+price) ? '9999' : price,
-      title,
-    };
-
-    //에러 처리
-    await SupabaseBrowserApi.createPost(postFormData);
-
-    alert('게시글 작성 완료');
-
-    router.push(`/board/${board_id}`);
-
-    //Todo. 이후 RevalidatePath 할지 결정
-  }
+  const { handleWritePost } = useHandleWritePost({
+    editorContent,
+    postDetail,
+    postMethod,
+    user_id,
+  });
 
   return (
     <form onSubmit={handleWritePost}>
-      <div className='flex justify-between border-b border-[#000] pr-[24px] mb-[26px] '>
+      <section className='flex justify-between border-b border-[#000] pr-[24px] mb-[26px] '>
         <h1 className='text-[22px] font-[700] mb-[16px]  '>
           카페 글쓰기
         </h1>
         <button className='w-[50px] h-[36px] px-[12px] text-[13px] font-[700] bg-[#03c75a1f] text-[#009F47] rounded-[6px] '>
           등록
         </button>
-      </div>
+      </section>
 
-      <div className='flex flex-col gap-[12px] border border-[#eee] rounded-[14px] px-[20px] py-[28px] mr-[8px]'>
+      <section className='flex flex-col gap-[12px] border border-[#eee] rounded-[14px] px-[20px] py-[28px] mr-[8px]'>
         <BoardSelect
           className='h-[48px] rounded-[12px]'
-          htmlName='board'
+          htmlName='board_id'
           user_level={user_level}
           defaultSelectedBoardId={defaultSelectedBoardId}
         />
-
         <TextInput
           placeholder='상품명(제목)'
           htmlName='title'
@@ -110,12 +70,13 @@ function PostWriteForm({
         <TextInput
           placeholder='이미지 주소를 입력하세요'
           htmlName='item_img'
-          defaultValue={postDetail?.price}
+          defaultValue={postDetail?.item_img}
         />
-        <div className=''>
-          <Editor setEditorContent={setEditorContent} />
-        </div>
-      </div>
+        <Editor
+          setEditorContent={setEditorContent}
+          defaultValue={postDetail?.content!}
+        />
+      </section>
     </form>
   );
 }

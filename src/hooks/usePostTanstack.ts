@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { PostItemType } from '@/types/common';
+import { type PostFormType, type PostItemType } from '@/types/common';
 
 import { SupabaseBrowserApi } from '@/api/supabase.browser.api';
 
@@ -42,5 +42,41 @@ export function usePostListDeleteMutation(userId: string) {
       queryClient.invalidateQueries({
         queryKey: [QKEY_POST_LIST, userId],
       }),
+  });
+}
+
+export function usePostCreateMutation() {
+  return useMutation({
+    mutationFn: (postForm: PostFormType) =>
+      SupabaseBrowserApi.createPost(postForm),
+
+    onSuccess: (_: string, { user_id, board_id }: PostFormType) => {
+      _invalidatePostListQuery(user_id, board_id);
+    },
+  });
+}
+
+export function usePostModifyMutation() {
+  return useMutation({
+    mutationFn: (postForm: PostFormType) =>
+      SupabaseBrowserApi.modifyPost(postForm),
+
+    onSuccess: (_: void, { user_id, board_id }: PostFormType) => {
+      _invalidatePostListQuery(user_id, board_id);
+    },
+  });
+}
+
+function _invalidatePostListQuery(userId: string, boardId: number) {
+  const queryClient = useQueryClient();
+
+  queryClient.invalidateQueries({
+    queryKey: [QKEY_POST_LIST, userId],
+    refetchType: 'all',
+  });
+
+  queryClient.invalidateQueries({
+    queryKey: [QKEY_POST_LIST, boardId],
+    refetchType: 'all',
   });
 }

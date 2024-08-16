@@ -6,9 +6,10 @@ import 'react-quill/dist/quill.snow.css';
 
 interface Props {
   setEditorContent: Dispatch<SetStateAction<string>>;
+  defaultValue: string;
 }
 
-function Editor({ setEditorContent }: Props) {
+function Editor({ setEditorContent, defaultValue }: Props) {
   const modules = {
     toolbar: {
       container: [
@@ -22,7 +23,13 @@ function Editor({ setEditorContent }: Props) {
     setEditorContent(value);
   }
 
-  return <ReactQuill modules={modules} onChange={handleOnChange} />;
+  return (
+    <ReactQuill
+      defaultValue={defaultValue}
+      modules={modules}
+      onChange={handleOnChange}
+    />
+  );
 }
 
 export default Editor;

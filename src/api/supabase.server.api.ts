@@ -89,12 +89,16 @@ export class SupabaseServerApi {
           )
         ),
         board: boards (
-          name
+          name, id
         )
       `
       )
       .eq('id', postId)
       .single();
+
+    if (!dbPostDetail) {
+      return null;
+    }
 
     const {
       content,
@@ -117,6 +121,7 @@ export class SupabaseServerApi {
       title,
       visited_count,
       board_name: board?.name!,
+      board_id: board?.id!,
       user_id: user?.id!,
       user_nickname: user?.nickname!,
       user_rank_name: user?.rank?.name!,
