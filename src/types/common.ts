@@ -41,6 +41,7 @@ export type PostDetailType = {
 };
 
 export type PostFormType = {
+  post_id?: string;
   title: string;
   item_img: string;
   content: string;
