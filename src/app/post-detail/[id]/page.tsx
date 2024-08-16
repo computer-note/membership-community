@@ -1,8 +1,10 @@
 import { SupabaseServerApi } from '@/api/supabase.server.api';
 
+import DataValidator from '../_components/DataValidator';
 import PostDetail from '../_components/PostDetail';
 import CommentPanel from '../_components/CommentPanel';
 import BottomButtons from '../_components/BottomButtons';
+import Redirector from '../_components/Redirector';
 
 interface Props {
   params: { id: string };
@@ -12,7 +14,9 @@ async function PostDetailPage({ params }: Props) {
   const postId = params.id;
   const postDetail = await SupabaseServerApi.getPostDetail(postId);
 
-  //Todo. postId에 해당하는 포스트가 없을 시 처리
+  if (!postDetail) {
+    return <Redirector />;
+  }
 
   return (
     <>
@@ -24,7 +28,7 @@ async function PostDetailPage({ params }: Props) {
       <BottomButtons
         className='mt-[13px]'
         postId={postId}
-        boardId={postDetail?.board_id}
+        boardId={postDetail?.board_id!}
       />
     </>
   );
