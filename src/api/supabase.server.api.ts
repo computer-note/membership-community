@@ -96,6 +96,10 @@ export class SupabaseServerApi {
       .eq('id', postId)
       .single();
 
+    if (!dbPostDetail) {
+      return null;
+    }
+
     const {
       content,
       created_at,
