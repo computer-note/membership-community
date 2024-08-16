@@ -83,6 +83,10 @@ export class SupabaseBrowserApi {
       .eq('id', comment_id);
   }
 
+  /** 
+    @param PostFormType 
+    @return DB에서 생성된 post_id 
+  */
   static async createPost({
     board_id,
     content,
@@ -90,21 +94,47 @@ export class SupabaseBrowserApi {
     price,
     title,
     user_id,
+  }: PostFormType): Promise<string> {
+    const supabase = createClient();
+
+    const { data } = await supabase
+      .from('posts')
+      .insert({
+        content,
+        user_id,
+        board_id,
+        item_img,
+        price,
+        title,
+      })
+      .select('id')
+      .single();
+
+    return data?.id!;
+  }
+
+  static async modifyPost({
+    board_id,
+    content,
+    item_img,
+    price,
+    title,
+    user_id,
+    post_id,
   }: PostFormType) {
     const supabase = createClient();
 
-    //Todo. 에러처리
-    const { error } = await supabase.from('posts').insert({
-      content,
-      user_id,
-      board_id,
-      item_img,
-      price,
-      title,
-    });
-
-    console.log('error ↓');
-    console.dir(error);
+    await supabase
+      .from('posts')
+      .update({
+        content,
+        user_id,
+        board_id,
+        item_img,
+        price,
+        title,
+      })
+      .eq('id', post_id!);
   }
 
   static async getPostListByUserId(
